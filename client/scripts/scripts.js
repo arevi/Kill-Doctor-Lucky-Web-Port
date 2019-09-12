@@ -248,7 +248,8 @@ const gameData = {
   Players: [],
   DoctorLucky: {
     location: null
-  }
+  },
+  currentTurn: 0
 };
 
 class Player {
@@ -280,9 +281,16 @@ const startNewGame = () => {
   gameData.DoctorLucky.location = Math.floor(Math.random() * 20) + 1;
 
   renderDoctorLucky();
+
+  renderMovableRooms(gameData.Players[gameData.currentTurn]);
 };
 
 const renderPlayers = () => {
+  let players = document.querySelectorAll('.player');
+  if (players) {
+    players.forEach(player => player.remove());
+  }
+
   gameData.Players.forEach(player =>
     document
       .querySelector(`#${getRoomName(player.location)}`)
@@ -326,14 +334,65 @@ const moveDoctorLucky = id => {
   renderDoctorLucky();
 };
 
+const renderMovableRooms = player => {
+  let playerLocation = player.location;
+  rooms[playerLocation].visitableRooms.forEach(room => {
+    let roomName = getRoomName(room);
+    document.querySelector(`#${roomName}`).style.border = '2px dashed green';
+    document
+      .querySelector(`#${roomName}`)
+      .addEventListener('click', movePlayer);
+  });
+};
+
+// Function to move players around the board
+// Takes in mouse event, acting as an event handler
+// Grabs room ID from the event using getRoomID function
+// retrieves players ID using the currentTurn variable
+// Renders the game board, resets movable rooms, initiates next turn
+function movePlayer(event) {
+  let playerID = gameData.Players[gameData.currentTurn].id;
+  gameData.Players[playerID].location = getRoomID(event.target.id);
+  renderPlayers();
+  resetMovableRooms(playerID);
+  nextTurn();
+}
+
+// Function to reset all movable rooms before starting new turn
+// Also resets the mouse handler to ensure players can't move twice
+const resetMovableRooms = () => {
+  boardTiles.forEach(room => {
+    room.style.border = '';
+    room.removeEventListener('click', movePlayer);
+  });
+};
+
+// Starts the next turn for the next player
+// Also checks if all players have had turn
+// If all players have went, Doctor Lucky moves
+const nextTurn = () => {
+  gameData.currentTurn++;
+  if (gameData.currentTurn == gameData.playerCount) {
+    moveDoctorLucky();
+    gameData.currentTurn = 0;
+    renderMovableRooms(gameData.Players[gameData.currentTurn]);
+  } else {
+    renderMovableRooms(gameData.Players[gameData.currentTurn]);
+  }
+};
+
+// Takes in a room ID and filters out the rooms array to return tile name
 const getRoomName = id => {
   return rooms.filter(room => room.id == id)[0].tileName;
 };
 
-const identifyRoom = htmlID => {
-  console.log(htmlID);
+// Accepts a rooms tile-name to retrieve it's proper ID
+const getRoomID = name => {
+  return rooms.filter(room => room.tileName == name)[0].id;
 };
 
+// Function to display the modal that configures game
+// Plays background music during game setup
 const displayGameSetup = () => {
   document.getElementById('menu-music').muted = false;
   modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
@@ -383,10 +442,6 @@ const decrementPlayerCount = () => {
     document.querySelector('.playerCount').textContent = gameData.playerCount;
   }
 };
-
-boardTiles.forEach(tile =>
-  tile.addEventListener('click', () => identifyRoom(tile.id))
-);
 
 window.onload = () => {
   displayGameSetup();
