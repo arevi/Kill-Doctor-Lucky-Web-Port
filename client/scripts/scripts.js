@@ -1,3 +1,10 @@
+//TO DO
+//1. Card integration (Weapons, Move, Failure)
+//2. User Interface
+//3. Ability to kill Dr. Lucky
+//4. Convert to MVC for better code organization
+//5. Add online play
+
 //Element Selectors
 const boardTiles = document.querySelectorAll('.board-tile');
 const modal = document.querySelector('.modal');
@@ -32,7 +39,7 @@ const rooms = [
     name: 'Dining Hall',
     tileName: 'tile-dining-hall',
     lineOfSight: [0, 2, 4, 19, 20, 22],
-    visitableRooms: [0, 1, 2, 4, 5, 7, 8, 9, 10, 14, 15, 16, 17]
+    visitableRooms: [0, 1, 2, 4, 5, 7, 8, 9, 10, 14, 15, 16, 17, 22]
   },
   {
     id: 4,
@@ -122,8 +129,8 @@ const rooms = [
     id: 16,
     name: 'Servants Quarters',
     tileName: 'tile-servants-quarters',
-    lineOfSight: [1, 14, 17],
-    visitableRooms: [1, 2, 3, 14, 15, 17]
+    lineOfSight: [1, 14, 17, 23],
+    visitableRooms: [1, 2, 3, 14, 15, 17, 23]
   },
   {
     id: 17,
@@ -263,7 +270,7 @@ class Player {
   }
 }
 
-// Starts a new game
+// Starts a new game by hiding the modal, allowing game board to be visible
 const startNewGame = () => {
   weaponCards.forEach(weapon => (weapon.available = true));
   modal.style.display = 'none';
@@ -278,6 +285,7 @@ const startNewGame = () => {
 
   renderPlayers();
 
+  // Sets a random location for Doctor Lucky
   gameData.DoctorLucky.location = Math.floor(Math.random() * 20) + 1;
 
   renderDoctorLucky();
@@ -285,6 +293,7 @@ const startNewGame = () => {
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
 };
 
+// Iterates through the game data, to nest players within game tiles
 const renderPlayers = () => {
   let players = document.querySelectorAll('.player');
   if (players) {
@@ -319,6 +328,7 @@ const renderDoctorLucky = () => {
     );
 };
 
+// Moves doctor lucky accepting an id if necessary.
 const moveDoctorLucky = id => {
   if (id) {
     gameData.DoctorLucky.location = id;
@@ -334,11 +344,14 @@ const moveDoctorLucky = id => {
   renderDoctorLucky();
 };
 
+// Takes a player object and retrieves the location
+// Using the player location, references the list of movable rooms
+// Assigns movable rooms a class to highlight them and a click handler to move player
 const renderMovableRooms = player => {
   let playerLocation = player.location;
   rooms[playerLocation].visitableRooms.forEach(room => {
     let roomName = getRoomName(room);
-    document.querySelector(`#${roomName}`).style.border = '2px dashed green';
+    document.querySelector(`#${roomName}`).classList.add('possible-move');
     document
       .querySelector(`#${roomName}`)
       .addEventListener('click', movePlayer);
@@ -350,9 +363,13 @@ const renderMovableRooms = player => {
 // Grabs room ID from the event using getRoomID function
 // retrieves players ID using the currentTurn variable
 // Renders the game board, resets movable rooms, initiates next turn
-function movePlayer(event) {
+function movePlayer(event, roomID) {
   let playerID = gameData.Players[gameData.currentTurn].id;
-  gameData.Players[playerID].location = getRoomID(event.target.id);
+  if (roomID) {
+    gameData.Players[playerID].location = roomID;
+  } else {
+    gameData.Players[playerID].location = getRoomID(event.target.id);
+  }
   renderPlayers();
   resetMovableRooms(playerID);
   nextTurn();
@@ -362,7 +379,7 @@ function movePlayer(event) {
 // Also resets the mouse handler to ensure players can't move twice
 const resetMovableRooms = () => {
   boardTiles.forEach(room => {
-    room.style.border = '';
+    room.classList.remove('possible-move');
     room.removeEventListener('click', movePlayer);
   });
 };
@@ -443,6 +460,7 @@ const decrementPlayerCount = () => {
   }
 };
 
+// On load handler for the window to show game setup screen
 window.onload = () => {
   displayGameSetup();
 };

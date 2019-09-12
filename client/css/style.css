@@ -344,6 +344,14 @@ body {
   display: inline-block;
 }
 
+.possible-move {
+  border: 2px dashed lime;
+}
+
+.possible-move:hover {
+  border: 2px solid lime;
+}
+
 @keyframes modal-load {
   0% {
     opacity: 0;
