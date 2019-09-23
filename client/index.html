@@ -23,6 +23,11 @@
     </div>
     <!--Modal -END-->
     <div id="page-container">
+      <div id="players-panel">
+        <ul id="players-list">
+          <li></li>
+        </ul>
+      </div>
       <div id="game-board">
         <div class="board-tile" id="tile-master-suite"></div>
         <div class="hall-tile" id="tile-upper-left-hall"></div>
@@ -56,6 +61,26 @@
         <div class="board-tile" id="tile-white-room"></div>
         <div class="board-tile" id="tile-winter-garden"></div>
         <div class="board-tile" id="tile-hedge-maze"></div>
+      </div>
+
+      <div id="controls-panel">
+        <div id="controls-info">
+          <h1>Kill Doctor Lucky</h1>
+          <p id="game-turn-count">Turn: 0</p>
+          <p id="current-turn"></p>
+        </div>
+        <div id="controls-cards">
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+          <div class="card"></div>
+        </div>
+        <div id="controls-actions">
+          <button class="kill-button" disabled>Kill</button>
+          <button class="end-turn-button" disabled>End Turn</button>
+        </div>
       </div>
     </div>
     <script src="./scripts/scripts.js"></script>

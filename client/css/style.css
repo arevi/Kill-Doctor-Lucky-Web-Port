@@ -2,27 +2,106 @@ body {
   font-family: 'Lato', sans-serif;
   margin: 0;
   padding: 0;
+  background-color: black;
+}
+
+#page-container {
+  display: flex;
+  justify-content: center;
+}
+
+#players-panel {
+  width: 10%;
+  float: left;
+  border: 2px solid black;
+  margin: 0;
+  padding: 0;
+}
+
+#players-list {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: white;
+  background-color: #270202;
+}
+
+#players-list li {
+  width: 100%;
+  height: 10%;
+  font-size: 14px;
+  list-style: none;
+  line-height: 30%;
+  text-align: center;
+  margin: 0;
+  padding-top: 10px;
+}
+
+#controls-panel {
+  width: 20%;
+  float: right;
+  background-color: #270202;
+}
+
+#controls-info {
+  height: 15%;
+  color: white;
+  text-align: center;
+}
+
+#controls-info h1 {
+  font-size: 1.25em;
+}
+
+#controls-cards {
+  height: 60%;
+  border-top: 5px solid black;
+  border-bottom: 5px solid black;
+}
+
+#controls-actions {
+  height: 25%;
+  text-align: center;
+}
+
+#controls-actions button {
+  width: 90%;
+  height: 15%;
+  color: white;
+  background-color: #492ac3;
+  border: 3px solid #011425;
+  border-radius: 5px;
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+
+#controls-actions button:hover {
+  cursor: pointer;
+  background-color: #171230;
+}
+
+#controls-actions button:disabled {
+  background-color: grey;
+  cursor: not-allowed;
 }
 
 #game-board {
   display: grid;
 
+  /*grid-template-rows: 104px 53px 54px 158px 53px 102px 56px 105px 158px;
+  grid-template-columns: 61px 165px 53px 145px 260px 144px 54px 163px 60px;*/
+
   grid-template-rows: 148px 75px 77px 225px 75px 146px 80px 150px 225px;
   grid-template-columns: 87px 236px 75px 207px 371px 205px 77px 233px 85px;
   grid-row-gap: 0;
   grid-column-gap: 0;
-
-  border: 2px solid red;
-}
-
-#page-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 .board-tile {
   display: flex;
+  max-width: 100%;
+  height: auto;
   justify-content: center;
   align-items: center;
 }
@@ -234,7 +313,7 @@ body {
   width: 100%;
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.8);
-  animation: modal-load 2s;
+  animation: modal-load 3s;
 }
 
 .modal-content {
@@ -243,7 +322,7 @@ body {
   width: 50%;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.2);
   border-radius: 5px;
-  animation: scroll-in 2s;
+  animation: scroll-in 3s;
 }
 
 .modal-header h2,
@@ -335,6 +414,18 @@ body {
   width: 25px;
   border-radius: 50%;
   display: inline-block;
+  border: 2px solid black;
+  box-shadow: 3px 3px 3px black;
+}
+
+.player-icon {
+  height: 25px;
+  width: 25px;
+  border: 2px solid black;
+  border-radius: 50%;
+  display: inline-block;
+  margin-left: 5px;
+  margin-top: 5px;
 }
 
 .doctorLucky {
@@ -342,6 +433,7 @@ body {
   width: 25px;
   border-radius: 50%;
   display: inline-block;
+  box-shadow: 3px 3px 3px black;
 }
 
 .possible-move {
@@ -350,6 +442,43 @@ body {
 
 .possible-move:hover {
   border: 2px solid lime;
+}
+
+.card {
+  display: inline-block;
+  width: 80px;
+  height: 120px;
+  background-color: white;
+  border-radius: 3px;
+  margin: 10px;
+  border: 1px solid black;
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+.card p:nth-of-type(2) {
+  font-size: 10px;
+}
+
+.card:hover {
+  box-shadow: 2px 2px 10px 1px red;
+}
+
+.card-selected {
+  box-shadow: 2px 2px 10px 1px red;
+}
+
+.card-container {
+  display: flex;
+}
+
+.card:hover {
+  cursor: pointer;
 }
 
 @keyframes modal-load {

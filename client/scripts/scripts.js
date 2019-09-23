@@ -11,6 +11,10 @@ const modal = document.querySelector('.modal');
 const modalHeader = document.querySelector('.modal-header');
 const modalBody = document.querySelector('.modal-body');
 const modalFooter = document.querySelector('.modal-footer');
+const playerList = document.getElementById('players-list');
+const killButton = document.querySelector('.kill-button');
+const endTurnButton = document.querySelector('.end-turn-button');
+const turnIndicator = document.getElementById('current-turn');
 
 const rooms = [
   {
@@ -232,6 +236,118 @@ const weaponCards = [
     modifierDamage: 4,
     modifierRoomID: 5,
     available: true
+  },
+  {
+    id: 6,
+    name: 'Killing Joke',
+    baseDamage: 3,
+    modifierDamage: null,
+    modifierRoomID: null,
+    available: true
+  },
+  {
+    id: 7,
+    name: 'Letter Opener',
+    baseDamage: 2,
+    modifierDamage: 5,
+    modifierRoomID: 13,
+    available: true
+  },
+  {
+    id: 8,
+    name: 'Loud Noise',
+    baseDamage: 2,
+    modifierDamage: 6,
+    modifierRoomID: 18,
+    available: true
+  },
+  {
+    id: 9,
+    name: 'Silken Cord',
+    baseDamage: 3,
+    modifierDamage: null,
+    modifierRoomID: null,
+    available: true
+  },
+  {
+    id: 10,
+    name: 'Tight Hat',
+    baseDamage: 2,
+    modifierDamage: null,
+    modifierRoomID: null,
+    available: true
+  },
+  {
+    id: 11,
+    name: 'Trowel',
+    baseDamage: 2,
+    modifierDamage: 6,
+    modifierRoomID: 21,
+    available: true
+  },
+  {
+    id: 12,
+    name: 'Monkey Hand',
+    baseDamage: 2,
+    modifierDamage: 8,
+    modifierRoomID: 20,
+    available: true
+  },
+  {
+    id: 13,
+    name: 'Piece of Rope',
+    baseDamage: 2,
+    modifierDamage: 8,
+    modifierRoomID: 22,
+    available: true
+  },
+  {
+    id: 14,
+    name: 'Pinking Shears',
+    baseDamage: 2,
+    modifierDamage: 6,
+    modifierRoomID: 15,
+    available: true
+  },
+  {
+    id: 15,
+    name: 'Rat Poison',
+    baseDamage: 2,
+    modifierDamage: 5,
+    modifierRoomID: 6,
+    available: true
+  },
+  {
+    id: 16,
+    name: 'Civil War Cannon',
+    baseDamage: 3,
+    modifierDamage: 5,
+    modifierRoomID: 12,
+    available: true
+  },
+  {
+    id: 17,
+    name: 'Crepe Pan',
+    baseDamage: 3,
+    modifierDamage: 4,
+    modifierRoomID: 8,
+    available: true
+  },
+  {
+    id: 18,
+    name: 'Runcible Spoon',
+    baseDamage: 3,
+    modifierDamage: null,
+    modifierRoomID: null,
+    available: true
+  },
+  {
+    id: 19,
+    name: 'Shoe Horn',
+    baseDamage: 2,
+    modifierDamage: 7,
+    modifierRoomID: 9,
+    available: true
   }
 ];
 
@@ -247,6 +363,256 @@ const failureCards = [
     failureValue: 2,
     description:
       'The Doctor speaks to you about a subject that on reflection makes no sense.'
+  },
+  {
+    id: 2,
+    failureValue: 2,
+    description:
+      'You cannot think over the sound of a passing train that no one else can hear.'
+  },
+  {
+    id: 3,
+    failureValue: 2,
+    description: 'Your feet stick to the floor. The Doctor escapes.'
+  },
+  {
+    id: 4,
+    failureValue: 2,
+    description:
+      'A flock of bats engulfs your head. You are powerless to evade them.'
+  },
+  {
+    id: 5,
+    failureValue: 2,
+    description: "You have somehow mistaken a child's toy for Doctor Lucky."
+  },
+  {
+    id: 6,
+    failureValue: 1,
+    descrption:
+      'The burden of wasted life weighs heavily on your brow. You miss.'
+  },
+  {
+    id: 7,
+    failureValue: 1,
+    description: 'You are stupid, stupid, stupid.'
+  },
+  {
+    id: 8,
+    failureValue: 3,
+    descrption:
+      'You are overcome with a sense of affection for the old man. It passes.'
+  },
+  {
+    id: 9,
+    failureValue: 3,
+    description:
+      'The Doctor wheels around and accidentally hits you in the head with a shovel.'
+  },
+  {
+    id: 10,
+    failureValue: 3,
+    description: 'As you approach the Doctor, you tumble through a trap door.'
+  },
+  {
+    id: 11,
+    failureValue: 2,
+    description:
+      'For a moment you believe yourself to be someone else. It is alarming.'
+  },
+  {
+    id: 12,
+    failureValue: 2,
+    description:
+      'Without warning, the Doctor begins to spin. It drives you to distraction.'
+  },
+  {
+    id: 13,
+    failureValue: 2,
+    description:
+      'Loose ceiling tiles crash to the floor as you approach the Doctor. He escapes.'
+  },
+  {
+    id: 14,
+    failureValue: 1,
+    description:
+      'Suddenly you find yourself unable to recall whether a straight beats a flush.'
+  },
+  {
+    id: 15,
+    failureValue: 1,
+    description:
+      'What you thought was a weapon wa only a banana. You abandon the peel.'
+  },
+  {
+    id: 16,
+    failureValue: 1,
+    description:
+      'The Doctor disappears from your path, ducking randomly here and there.'
+  },
+  {
+    id: 17,
+    failureValue: 1,
+    description:
+      'Your cares melt away as the distant strains of Mozart drift through the mansion.'
+  },
+  {
+    id: 18,
+    failureValue: 1,
+    description: 'An allergy to dust mites gets the better of you.'
+  },
+  {
+    id: 19,
+    failureValue: 1,
+    description:
+      'The Doctor turns to you, waxing rhapsodic on his recent polar advenutre.'
+  },
+  {
+    id: 20,
+    failureValue: 1,
+    description:
+      'Doctor Lucky pauses to examine his own thumbs. You are thrown off guard.'
+  },
+  {
+    id: 21,
+    failureValue: 1,
+    description:
+      "Doctor Lucky's cat howls. You hate it more than him. The moment passes."
+  },
+  {
+    id: 22,
+    failureValue: 1,
+    description:
+      'While sneaking up on the Doctor you are overcome by the urge to sing.'
+  },
+  {
+    id: 23,
+    failureValue: 1,
+    description:
+      'You slip on an out of place banana peel, hurtling hilariously into the air.'
+  },
+  {
+    id: 24,
+    failureValue: 1,
+    description: 'A sense of dread inhibits your every physical act.'
+  },
+  {
+    id: 25,
+    failureValue: 1,
+    description:
+      'Clattering mice distract you momentarily from your chosen course.'
+  },
+  {
+    id: 26,
+    failureValue: 1,
+    description:
+      'A drip of water. Is it rain? Another, and you slip, falling on your nose.'
+  },
+  {
+    id: 27,
+    failureValue: 1,
+    description:
+      "Doctor Lucky's jacket conceals a well-placed deck of playing cards."
+  },
+  {
+    id: 28,
+    failureValue: 1,
+    description: 'Your thoughts turn to a misspent youth.'
+  },
+  {
+    id: 29,
+    failureValue: 1,
+    description: 'You question your freshness.'
+  },
+  {
+    id: 30,
+    failureValue: 1,
+    description:
+      'Suddenly, a pause; a thought; a shudder. Did you leave the iron on?'
+  },
+  {
+    id: 31,
+    failureValue: 1,
+    description:
+      'In the darkness, a shadow. Another guest. You pause. The Doctor is gone.'
+  },
+  {
+    id: 32,
+    failureValue: 1,
+    description:
+      'Creaking floorboards. The trickery of shadows. Fate conspires against you.'
+  },
+  {
+    id: 33,
+    failureValue: 1,
+    description: 'This tastes like Rat Poison! I love Rat Poison!'
+  },
+  {
+    id: 34,
+    failureValue: 3,
+    description:
+      "A wizened kung fu master intervenes on the Doctor's behalf, then vanishes."
+  },
+  {
+    id: 35,
+    failureValue: 2,
+    description: 'You forget.'
+  },
+  {
+    id: 36,
+    failureValue: 2,
+    description:
+      'Your attack passes through the Doctor as if he were not even there.'
+  },
+  {
+    id: 37,
+    failureValue: 2,
+    description: 'The doctor inexplicably vanishes in a cloud of feathers.'
+  },
+  {
+    id: 38,
+    failureValue: 1,
+    description:
+      'You are frozen in place by the garish melody of a passing ice cream truck.'
+  },
+  {
+    id: 39,
+    failureValue: 1,
+    description:
+      'A door frame hits you squarely in the head. The Doctor moves on.'
+  },
+  {
+    id: 40,
+    failureValue: 1,
+    description:
+      'The Doctor turns to you and asks you for the time. You are distracted.'
+  },
+  {
+    id: 41,
+    failureValue: 1,
+    description: "A hint of regret stays your hand. It won't last."
+  }
+];
+
+const moveCards = [
+  {
+    id: 0,
+    name: 'Move-1',
+    type: 'Free',
+    movement: 1,
+    quantity: 8,
+    description:
+      'Play this card to move yourself or Dr. Lucky 1 room in any direction.',
+    available: true
+  },
+  {
+    id: 1,
+    name: 'Move-2',
+    type: 'Free',
+    movement: 2,
+    quantity: 2,
+    description:
+      'Play this card to move yourself or Dr. Lucky up to 2 rooms in any direction.'
   }
 ];
 
@@ -255,6 +621,11 @@ const gameData = {
   Players: [],
   DoctorLucky: {
     location: null
+  },
+  MurderAttempt: {
+    location: null,
+    damagePoints: null,
+    failurePoints: null
   },
   currentTurn: 0
 };
@@ -267,12 +638,18 @@ class Player {
     this.location = 0;
     this.damage = 0;
     this.spite = 0;
+    this.weaponCards = [];
+    this.failureCards = [];
+    this.moveCards = [];
   }
 }
 
 // Starts a new game by hiding the modal, allowing game board to be visible
 const startNewGame = () => {
   weaponCards.forEach(weapon => (weapon.available = true));
+  gameData.Players = [];
+  gameData.DoctorLucky.location = null;
+  gameData.currentTurn = 0;
   modal.style.display = 'none';
 
   //Generate unique players and insert them into gameData object
@@ -283,17 +660,19 @@ const startNewGame = () => {
     );
   }
 
-  renderPlayers();
-
   // Sets a random location for Doctor Lucky
   gameData.DoctorLucky.location = Math.floor(Math.random() * 20) + 1;
 
   renderDoctorLucky();
+  renderPlayers();
+  updatePlayerList();
 
+  turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
 };
 
 // Iterates through the game data, to nest players within game tiles
+// Removes old player sprites if they exist
 const renderPlayers = () => {
   let players = document.querySelectorAll('.player');
   if (players) {
@@ -310,8 +689,36 @@ const renderPlayers = () => {
     `
       )
   );
+
+  updatePlayerList();
 };
 
+const updatePlayerList = () => {
+  playerList.innerHTML = '';
+  playerList.innerHTML = `
+		<li>
+			<p>Doctor Lucky</p>
+			<div class="player-icon" style="background-color: #000;"></div>
+			<p>Location: </p><p>${rooms[gameData.DoctorLucky.location].name}</p>
+		</li>
+	`;
+
+  gameData.Players.forEach(
+    player =>
+      (playerList.innerHTML += `
+		<li>
+			<p>Player ${player.id + 1}</p>
+			<div class="player-icon" style="background-color: ${player.color};"></div>
+			<p>Spite: ${player.spite}</p>
+			<p>
+        ${rooms[player.location].name}
+        </p>
+		</li>`)
+  );
+};
+
+// Renders the doctor lucky sprite on the game board
+// Removes any previous doctor lucky sprites if they exist
 const renderDoctorLucky = () => {
   let doctorLuckySprite = document.querySelector('.doctorLucky');
   if (doctorLuckySprite) {
@@ -326,6 +733,8 @@ const renderDoctorLucky = () => {
       <div class="doctorLucky" style="background-color: black; border: 1px solid red"></div>
     `
     );
+
+  updatePlayerList();
 };
 
 // Moves doctor lucky accepting an id if necessary.
@@ -358,6 +767,23 @@ const renderMovableRooms = player => {
   });
 };
 
+const setupButtons = player => {
+  if (
+    player.location == gameData.DoctorLucky.location &&
+    checkLineOfSight(player.location) == false
+  ) {
+    killButton.disabled = false;
+    killButton.addEventListener('click', murderAttempt(player));
+  }
+  endTurnButton.disabled = false;
+  endTurnButton.addEventListener('click', nextTurn);
+};
+
+const resetButton = () => {
+  killButton.disabled = true;
+  endTurnButton.disabled = true;
+};
+
 // Function to move players around the board
 // Takes in mouse event, acting as an event handler
 // Grabs room ID from the event using getRoomID function
@@ -370,9 +796,11 @@ function movePlayer(event, roomID) {
   } else {
     gameData.Players[playerID].location = getRoomID(event.target.id);
   }
+  setupButtons(gameData.Players[gameData.currentTurn]);
   renderPlayers();
+  updatePlayerList();
+
   resetMovableRooms(playerID);
-  nextTurn();
 }
 
 // Function to reset all movable rooms before starting new turn
@@ -387,14 +815,25 @@ const resetMovableRooms = () => {
 // Starts the next turn for the next player
 // Also checks if all players have had turn
 // If all players have went, Doctor Lucky moves
-const nextTurn = () => {
-  gameData.currentTurn++;
+// Allows for lucky train to be passed in, allowing for another turn
+const nextTurn = (e, luckyTrain) => {
+  if (
+    checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
+  ) {
+    DrawRandomCard(gameData.Players[gameData.currentTurn]);
+  }
+  if (!luckyTrain) {
+    gameData.currentTurn++;
+  }
+
   if (gameData.currentTurn == gameData.playerCount) {
     moveDoctorLucky();
     gameData.currentTurn = 0;
+    turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
   } else {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
+    turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   }
 };
 
@@ -408,6 +847,162 @@ const getRoomID = name => {
   return rooms.filter(room => room.tileName == name)[0].id;
 };
 
+// Checks if a room is within line of sight, of players.
+// Returns true, if visible, or false if not visible
+const checkLineOfSight = roomID => {
+  let visible = false;
+  const occupiedRooms = gameData.Players.map(player => player.location);
+  occupiedRooms.forEach(room => {
+    if (rooms[roomID].lineOfSight.includes(room)) {
+      visible = true;
+    }
+  });
+
+  return visible;
+};
+
+// Function to generate a random card from the deck of available cards
+// Will only return cards that are available in the deck still.
+const DrawRandomCard = player => {
+  //Generates a random number between 0 and 2
+  let cardType = Math.floor(Math.random() * 3);
+  let possibleCards = [];
+  let randomCard;
+
+  // Switches on the number generated
+  switch (cardType) {
+    case 0:
+      weaponCards.forEach(card => {
+        if (card.available == true) {
+          possibleCards.push(weaponCards.indexOf(card));
+        }
+      });
+      randomCard = Math.floor(Math.random() * possibleCards.length);
+      weaponCards[randomCard].available = false;
+      player.weaponCards.push(weaponCards[randomCard]);
+      displayGameCard(weaponCards[randomCard]);
+      break;
+    case 1:
+      moveCards.forEach(card => {
+        if (card.available == true) {
+          possibleCards.push(moveCards.indexOf(card));
+        }
+      });
+      randomCard = Math.floor(Math.random() * possibleCards.length);
+      moveCards[randomCard].available = false;
+      player.moveCards.push(moveCards[randomCard]);
+      displayGameCard(moveCards[randomCard]);
+      break;
+    case 2:
+      failureCards.forEach(card => {
+        if (card.available == true) {
+          possibleCards.push(failureCards.indexOf(card));
+        }
+      });
+      randomCard = Math.floor(Math.random() * possibleCards.length);
+      failureCards[randomCard].available = false;
+      player.failureCards.push(failureCards[randomCard]);
+      displayGameCard(failureCards[randomCard]);
+      break;
+  }
+};
+
+// Function to display a modal for a game card
+// Accepts input of header, body and footer
+const displayGameCard = card => {
+  modalHeader.innerHTML = `<h2>You stumbed upon something that may be of use...</h2>`;
+  modalBody.innerHTML = '';
+
+  if (card.baseDamage) {
+    modalBody.innerHTML += `
+    <div class="card">
+      ${card.name}
+    </div>`;
+    modalBody.innerHTML += `<p>Damage: ${card.baseDamage}</p>`;
+    if (card.modifierDamage != null) {
+      modalBody.innerHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
+    }
+    modalFooter.innerHTML = `<h3>Weapon cards allow you to deal additional damage</h3>`;
+  } else if (card.failureValue) {
+    modalBody.innerHTML = `
+    <div class="card">
+      F-${card.failureValue}
+    </div>`;
+    modalBody.innerHTML += `<p>Failure Points: ${card.failureValue}</p>`;
+    modalFooter.innerHTML = `<h3>Failure cards can help prevent murder!</h3>`;
+  } else {
+    modalBody.innerHTML = `
+    <div class="card">
+      ${card.name}
+    </div>`;
+    modalBody.innerHTML += `<p>${card.description}</p>`;
+    modalFooter.innerHTML = `<h3>Movement cards help you, or Lucky, move around.</h3>`;
+  }
+
+  modalBody.innerHTML += `  <div class="startGameBtn Btn">
+  Continue
+  </div>`;
+
+  modal.style.display = 'block';
+
+  document
+    .querySelector('.Btn')
+    .addEventListener('click', () => (modal.style.display = 'none'));
+};
+
+const displayMurderCard = (body, footer) => {
+  modalHeader.innerHTML = `<h2>What will be your weapon of choice?</h2>`;
+  modalBody.innerHTML = `${body}
+  <div class="startGameBtn Btn">
+  Continue
+  </div>`;
+  modalFooter.innerHTML = `<h3>${footer}</h3>`;
+  modal.style.display = 'block';
+};
+
+const murderAttempt = player => {
+  let damage = 0;
+
+  let weaponHTML = '<div class="card-container">';
+  player.weaponCards.forEach(card => {
+    weaponHTML =
+      weaponHTML +
+      `<div class="card" id="${card.id}">${card.name}<p>Damage: ${card.baseDamage}</p>`;
+    if (card.modifierDamage != null) {
+      weaponHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
+    } else {
+      weaponHTML += '</div>';
+    }
+  });
+  weaponHTML += '</div>';
+
+  displayMurderCard(weaponHTML, `Spite Bonus: ${player.spite}`);
+
+  document.querySelectorAll('.card').forEach(card =>
+    card.addEventListener('click', () => {
+      damage = 0 + player.spite;
+      if (player.location == weaponCards[card.id].modifierRoomID) {
+        damage += parseInt(weaponCards[card.id].modifierDamage);
+      } else {
+        damage += parseInt(weaponCards[card.id].baseDamage);
+      }
+      clearSelectedCards();
+      card.classList.add('card-selected');
+    })
+  );
+
+  document.querySelector('.Btn').addEventListener('click', () => {
+    console.log(
+      `Player ${player.id + 1} attempted murder with damage of ${damage}`
+    );
+  });
+};
+
+const clearSelectedCards = () => {
+  document
+    .querySelectorAll('.card')
+    .forEach(card => card.classList.remove('card-selected'));
+};
 // Function to display the modal that configures game
 // Plays background music during game setup
 const displayGameSetup = () => {
@@ -429,6 +1024,7 @@ const displayGameSetup = () => {
   </div>
   `;
   modalFooter.innerHTML = `<h3>Game Setup</h3>`;
+  modal.style.display = 'block';
 
   document
     .querySelector('.incrementBtn')
