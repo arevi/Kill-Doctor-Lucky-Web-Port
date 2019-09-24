@@ -816,7 +816,7 @@ const resetMovableRooms = () => {
 // Also checks if all players have had turn
 // If all players have went, Doctor Lucky moves
 // Allows for lucky train to be passed in, allowing for another turn
-const nextTurn = (e, luckyTrain) => {
+const nextTurn = async (e, luckyTrain) => {
   if (
     checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
   ) {
@@ -835,6 +835,8 @@ const nextTurn = (e, luckyTrain) => {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
     turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   }
+
+  console.log(await sendData());
 };
 
 // Takes in a room ID and filters out the rooms array to return tile name
@@ -1067,12 +1069,17 @@ const sendData = async () => {
     body: JSON.stringify(gameData)
   };
   try {
-    const fetchReponse = await fetch('/api/gamedata', settings);
-    const data = await fetchResponse.json();
-    return data;
+    const res = await fetch('api/gamedata', settings);
+    return await res.json();
   } catch (e) {
     return e;
   }
+};
+
+const getData = async () => {
+  let res = await fetch('api/gamedata');
+  let data = await res.json();
+  return data;
 };
 
 // On load handler for the window to show game setup screen
