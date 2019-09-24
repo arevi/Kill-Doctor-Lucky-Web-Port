@@ -475,6 +475,7 @@ body {
 
 .card-container {
   display: flex;
+  justify-content: center;
 }
 
 .card:hover {

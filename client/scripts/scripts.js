@@ -624,6 +624,9 @@ const gameData = {
   },
   MurderAttempt: {
     location: null,
+    AttackingPlayer: null,
+    CurrentDefendingPlayer: null,
+    defenders: [],
     damagePoints: null,
     failurePoints: null
   },
@@ -917,8 +920,10 @@ const displayGameCard = card => {
 
   if (card.baseDamage) {
     modalBody.innerHTML += `
+    <div class="card-container">
     <div class="card">
       ${card.name}
+    </div>
     </div>`;
     modalBody.innerHTML += `<p>Damage: ${card.baseDamage}</p>`;
     if (card.modifierDamage != null) {
@@ -927,15 +932,19 @@ const displayGameCard = card => {
     modalFooter.innerHTML = `<h3>Weapon cards allow you to deal additional damage</h3>`;
   } else if (card.failureValue) {
     modalBody.innerHTML = `
+    <div class="card-container">
     <div class="card">
       F-${card.failureValue}
+    </div>
     </div>`;
     modalBody.innerHTML += `<p>Failure Points: ${card.failureValue}</p>`;
     modalFooter.innerHTML = `<h3>Failure cards can help prevent murder!</h3>`;
   } else {
     modalBody.innerHTML = `
+    <div class="card-container">
     <div class="card">
       ${card.name}
+    </div>
     </div>`;
     modalBody.innerHTML += `<p>${card.description}</p>`;
     modalFooter.innerHTML = `<h3>Movement cards help you, or Lucky, move around.</h3>`;
@@ -950,6 +959,116 @@ const displayGameCard = card => {
   document
     .querySelector('.Btn')
     .addEventListener('click', () => (modal.style.display = 'none'));
+};
+
+const displayFailureCard = player => {
+  modalHeader.innerHTML = `<h2>Someone attempted a murder with: ${gameData.MurderAttempt.damagePoints} damage!</h2>`;
+
+  let failureCardHTML;
+  let failureContribution;
+  if (player.failureCards.length == 0) {
+    failureCardHTML =
+      '<p>Unfortuntely you do not have any failure carsd available to use...</p>';
+  } else {
+    failureCardHTML = `<p>Player ${player.id +
+      1} Selection: </p><div class="card-container">`;
+    player.failureCards.forEach(card => {
+      failureCardHTML += `<div class="card" id="${card.id}">F-${card.failureValue}</div>`;
+    });
+    failureCardHTML += '</div>';
+  }
+
+  modalBody.innerHTML = ` ${failureCardHTML}
+  <div class="startGameBtn Btn failure-contribute">
+  Continue
+  </div>`;
+  modalFooter.innerHTML = `<h3>Current Failure Points: ${gameData.MurderAttempt.failurePoints}</h3>`;
+  modal.style.display = 'block';
+
+  document.querySelectorAll('.card').forEach(card =>
+    card.addEventListener('click', () => {
+      failureContribution = failureCards[card.id].failureValue;
+      clearSelectedCards();
+      card.classList.add('card-selected');
+    })
+  );
+
+  document.querySelector('.Btn').addEventListener('click', () => {
+    gameData.MurderAttempt.failurePoints += failureContribution;
+    modal.style.display = 'none';
+    failureAttempt();
+  });
+};
+
+const failureAttempt = () => {
+  if (gameData.MurderAttempt.CurrentDefendingPlayer == null) {
+    gameData.MurderAttempt.CurrentDefendingPlayer = 0;
+    displayFailureCard(gameData.MurderAttempt.defenders[0]);
+  } else if (
+    gameData.MurderAttempt.CurrentDefendingPlayer <
+    gameData.playerCount - 2
+  ) {
+    displayFailureCard(
+      gameData.MurderAttempt.defenders[
+        gameData.MurderAttempt.CurrentDefendingPlayer + 1
+      ]
+    );
+    gameData.MurderAttempt.CurrentDefendingPlayer++;
+  } else {
+    calculuateMurderChance();
+  }
+};
+
+const calculuateMurderChance = () => {
+  if (
+    gameData.MurderAttempt.damagePoints > gameData.MurderAttempt.failurePoints
+  ) {
+    murderSuccess();
+  } else {
+    murderFailure();
+  }
+};
+
+const murderFailure = () => {
+  modalHeader.innerHTML = `<h2>Lucky is alive!</h2>`;
+  modalBody.innerHTML = `
+  <p>Someone has made an attempt on Lucky's life but thankfully the group was able to defend him properly, no one is quite sure who the perpetrator was but Player ${gameData
+    .MurderAttempt.AttackingPlayer + 1} sure looks suspicious.</p>
+  <div class="startGameBtn Btn">
+  Continue
+  </div>`;
+  modalFooter.innerHTML = `<h3>Murder thwarted!</h3>`;
+  modal.style.display = 'block';
+
+  document.querySelector('.Btn').addEventListener('click', () => {
+    modal.style.display = 'none';
+    resetMurderAttemptData();
+  });
+};
+
+const resetMurderAttemptData = () => {
+  gameData.MurderAttempt.AttackingPlayer = null;
+  gameData.MurderAttempt.CurrentDefendingPlayer = null;
+  gameData.MurderAttempt.damagePoints = null;
+  gameData.MurderAttempt.defenders = null;
+  gameData.MurderAttempt.location = null;
+  gameData.MurderAttempt.failurePoints = null;
+};
+
+const murderSuccess = player => {
+  modalHeader.innerHTML = `<h2>Lucky is dead!</h2>`;
+  modalBody.innerHTML = `
+  <p>Dr. Lucky has been murdered, now one is quite sure who has done it but Player ${player.id +
+    1} sure did leave the mansion quite quickly after. Whatever the matter, you are quite happy that the man is finally no more.</p>
+  <div class="startGameBtn Btn">
+  New Game
+  </div>`;
+  modalFooter.innerHTML = `<h3>Game Over</h3>`;
+  modal.style.display = 'block';
+
+  document
+    .querySelector('.startGameBtn')
+    .addEventListener('click', displayGameSetup);
 };
 
 const displayMurderCard = (body, footer) => {
@@ -994,9 +1113,19 @@ const murderAttempt = player => {
   );
 
   document.querySelector('.Btn').addEventListener('click', () => {
-    console.log(
-      `Player ${player.id + 1} attempted murder with damage of ${damage}`
-    );
+    gameData.MurderAttempt.damagePoints = damage;
+    gameData.MurderAttempt.location = player.location;
+    gameData.MurderAttempt.AttackingPlayer = player.id;
+    gameData.MurderAttempt.failurePoints = 0;
+    modal.style.display = 'none';
+
+    gameData.Players.forEach(player => {
+      if (player.id != gameData.MurderAttempt.AttackingPlayer) {
+        gameData.MurderAttempt.defenders.push(player);
+      }
+    });
+
+    failureAttempt();
   });
 };
 
