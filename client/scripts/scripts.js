@@ -821,6 +821,14 @@ const renderMovableRooms = player => {
       .querySelector(`#${roomName}`)
       .addEventListener('click', movePlayer);
   });
+
+  rooms[playerLocation].lineOfSight.forEach(room => {
+    let roomName = getRoomName(room);
+    document.querySelector(`#${roomName}`).classList.add('in-sight');
+    document
+      .querySelector(`#${roomName}`)
+      .addEventListener('click', movePlayer);
+  });
 };
 
 const setupButtons = player => {
@@ -865,6 +873,7 @@ const resetMovableRooms = () => {
   boardTiles.forEach(room => {
     room.classList.remove('possible-move');
     room.removeEventListener('click', movePlayer);
+    room.classList.remove('in-sight');
   });
 };
 
