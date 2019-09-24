@@ -15,6 +15,8 @@ const playerList = document.getElementById('players-list');
 const killButton = document.querySelector('.kill-button');
 const endTurnButton = document.querySelector('.end-turn-button');
 const turnIndicator = document.getElementById('current-turn');
+const turnsElapsedIndicator = document.getElementById('game-turn-count');
+const cardContrainerUI = document.getElementById('controls-cards');
 
 const rooms = [
   {
@@ -630,7 +632,8 @@ const gameData = {
     damagePoints: null,
     failurePoints: null
   },
-  currentTurn: 0
+  currentTurn: 0,
+  turnsElapsed: 0
 };
 
 class Player {
@@ -653,6 +656,8 @@ const startNewGame = () => {
   gameData.Players = [];
   gameData.DoctorLucky.location = null;
   gameData.currentTurn = 0;
+  gameData.turnsElapsed = 0;
+  turnsElapsedIndicator.innerText = `Round: ${gameData.turnsElapsed}`;
   modal.style.display = 'none';
 
   //Generate unique players and insert them into gameData object
@@ -754,6 +759,12 @@ const moveDoctorLucky = id => {
   }
 
   renderDoctorLucky();
+  gameData.turnsElapsed++;
+  updateTurnsElapsed();
+};
+
+const updateTurnsElapsed = () => {
+  turnsElapsedIndicator.innerText = `Round: ${gameData.turnsElapsed}`;
 };
 
 // Takes a player object and retrieves the location
@@ -776,7 +787,7 @@ const setupButtons = player => {
     checkLineOfSight(player.location) == false
   ) {
     killButton.disabled = false;
-    killButton.addEventListener('click', murderAttempt(player));
+    killButton.addEventListener('click', murderAttempt);
   }
   endTurnButton.disabled = false;
   endTurnButton.addEventListener('click', nextTurn);
@@ -1099,21 +1110,27 @@ const displayMurderCard = (body, footer) => {
 // Initiates a murder attempt by passing in a player object
 // The player is then prompted with a modal for weapon options
 // From there the failureAttempt function is called to counter the attack
-const murderAttempt = player => {
+const murderAttempt = () => {
+  let player = gameData.Players[gameData.currentTurn];
   let damage = 0;
 
-  let weaponHTML = '<div class="card-container">';
-  player.weaponCards.forEach(card => {
-    weaponHTML =
-      weaponHTML +
-      `<div class="card" id="${card.id}">${card.name}<p>Damage: ${card.baseDamage}</p>`;
-    if (card.modifierDamage != null) {
-      weaponHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
-    } else {
-      weaponHTML += '</div>';
-    }
-  });
-  weaponHTML += '</div>';
+  let weaponHTML;
+  if (player.weaponCards.length == 0) {
+    weaponHTML += `It doesn't look like you have any weapons...`;
+  } else {
+    weaponHTML += '<div class="card-container">';
+    player.weaponCards.forEach(card => {
+      weaponHTML =
+        weaponHTML +
+        `<div class="card" id="${card.id}">${card.name}<p>Damage: ${card.baseDamage}</p>`;
+      if (card.modifierDamage != null) {
+        weaponHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
+      } else {
+        weaponHTML += '</div>';
+      }
+    });
+    weaponHTML += '</div>';
+  }
 
   displayMurderCard(weaponHTML, `Spite Bonus: ${player.spite}`);
 
