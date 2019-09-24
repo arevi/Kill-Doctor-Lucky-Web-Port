@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
+// Defines the variable that will hold gameData being sent over
 let gameData;
 
+// Route to return the game data by itself to allow public access
 router.get('/', (req, res) => {
   res.send(gameData);
 });
 
+// Defines a post route that receives a request body containg game data
+// Returns JSON with the game object for reference and either success/failure msg
 router.post('/', (req, res) => {
   console.log(req.body);
   if (req.body) {
@@ -20,4 +24,5 @@ router.post('/', (req, res) => {
   }
 });
 
+// Exporting the routes defined above
 module.exports = router;

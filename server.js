@@ -5,7 +5,7 @@ const path = require('path');
 // Init middleware to process JSON body data sent to server
 app.use(express.json({ extended: false }));
 
-//Defining routes
+//Defining routes that are accessible within the server
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/index.html'));
 });

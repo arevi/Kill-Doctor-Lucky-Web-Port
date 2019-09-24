@@ -961,14 +961,17 @@ const displayGameCard = card => {
     .addEventListener('click', () => (modal.style.display = 'none'));
 };
 
+// Shows a modal with the option to select cards to contribute failure points
+// Towards stopping a murder attempt
+// After each confirmation, will continue the failureattempt to the next player
 const displayFailureCard = player => {
   modalHeader.innerHTML = `<h2>Someone attempted a murder with: ${gameData.MurderAttempt.damagePoints} damage!</h2>`;
 
   let failureCardHTML;
-  let failureContribution;
+  let failureContribution = 0;
   if (player.failureCards.length == 0) {
     failureCardHTML =
-      '<p>Unfortuntely you do not have any failure carsd available to use...</p>';
+      '<p>Unfortuntely you do not have any failure cards available to use...</p>';
   } else {
     failureCardHTML = `<p>Player ${player.id +
       1} Selection: </p><div class="card-container">`;
@@ -1000,6 +1003,8 @@ const displayFailureCard = player => {
   });
 };
 
+// Function to handle switching between players selecting failure cards
+// After each switch, it will display the modal using displayFailureCard
 const failureAttempt = () => {
   if (gameData.MurderAttempt.CurrentDefendingPlayer == null) {
     gameData.MurderAttempt.CurrentDefendingPlayer = 0;
@@ -1019,6 +1024,7 @@ const failureAttempt = () => {
   }
 };
 
+// Decides whether the murder was successful or not based from damage vs failure
 const calculuateMurderChance = () => {
   if (
     gameData.MurderAttempt.damagePoints > gameData.MurderAttempt.failurePoints
@@ -1029,6 +1035,8 @@ const calculuateMurderChance = () => {
   }
 };
 
+// Shows a modal signifying that the murder attempt has failed and allows players
+// To return to the game and calls a function to reset murderattempt data
 const murderFailure = () => {
   modalHeader.innerHTML = `<h2>Lucky is alive!</h2>`;
   modalBody.innerHTML = `
@@ -1042,10 +1050,13 @@ const murderFailure = () => {
 
   document.querySelector('.Btn').addEventListener('click', () => {
     modal.style.display = 'none';
+    gameData.Players[gameData.MurderAttempt.AttackingPlayer].spite++;
     resetMurderAttemptData();
   });
 };
 
+// Resets all data associated with a murder attempt to null
+// This allows it to be written to again later, ensuring data stability
 const resetMurderAttemptData = () => {
   gameData.MurderAttempt.AttackingPlayer = null;
   gameData.MurderAttempt.CurrentDefendingPlayer = null;
@@ -1055,6 +1066,8 @@ const resetMurderAttemptData = () => {
   gameData.MurderAttempt.failurePoints = null;
 };
 
+// Function to show a modal signifying the game being completed due to a
+// successful murder attempt on Lucky's life
 const murderSuccess = player => {
   modalHeader.innerHTML = `<h2>Lucky is dead!</h2>`;
   modalBody.innerHTML = `
@@ -1071,6 +1084,8 @@ const murderSuccess = player => {
     .addEventListener('click', displayGameSetup);
 };
 
+// Displays the card that will take in the proper elements to display
+// For weapon selection
 const displayMurderCard = (body, footer) => {
   modalHeader.innerHTML = `<h2>What will be your weapon of choice?</h2>`;
   modalBody.innerHTML = `${body}
@@ -1081,6 +1096,9 @@ const displayMurderCard = (body, footer) => {
   modal.style.display = 'block';
 };
 
+// Initiates a murder attempt by passing in a player object
+// The player is then prompted with a modal for weapon options
+// From there the failureAttempt function is called to counter the attack
 const murderAttempt = player => {
   let damage = 0;
 
@@ -1129,11 +1147,13 @@ const murderAttempt = player => {
   });
 };
 
+// Clears the selection effect on hovering over cards in any menus
 const clearSelectedCards = () => {
   document
     .querySelectorAll('.card')
     .forEach(card => card.classList.remove('card-selected'));
 };
+
 // Function to display the modal that configures game
 // Plays background music during game setup
 const displayGameSetup = () => {
