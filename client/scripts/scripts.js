@@ -1056,6 +1056,25 @@ const decrementPlayerCount = () => {
   }
 };
 
+const sendData = async () => {
+  const settings = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify(gameData)
+  };
+  try {
+    const fetchReponse = await fetch('/api/gamedata', settings);
+    const data = await fetchResponse.json();
+    return data;
+  } catch (e) {
+    return e;
+  }
+};
+
 // On load handler for the window to show game setup screen
 window.onload = () => {
   displayGameSetup();

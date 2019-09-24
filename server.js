@@ -10,9 +10,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/index.html'));
 });
 
-app.use(express.static(__dirname + '/client'));
-
 app.use('/api/gamedata', require('./routes/api/GameStatus'));
+
+//Defining routes to access static objects, all of which are stored in /client
+app.use(express.static(__dirname + '/client'));
 
 // Defines a PORT for our server to listen on
 // If an environmental variable is setup in the server container, it will use it
