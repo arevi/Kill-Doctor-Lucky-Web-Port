@@ -143,7 +143,7 @@ const rooms = [
     name: 'Hedge Maze',
     tileName: 'tile-hedge-maze',
     lineOfSight: [6, 18, 19, 23],
-    visitableRooms: [1, 2, 3, 14, 15, 16, 18, 23]
+    visitableRooms: [1, 2, 3, 14, 15, 16, 18, 19, 23]
   },
   {
     id: 18,
@@ -157,7 +157,7 @@ const rooms = [
     name: 'Piazza',
     tileName: 'tile-piazza',
     lineOfSight: [0, 3, 6, 18, 20, 22],
-    visitableRooms: [6, 18, 20]
+    visitableRooms: [6, 17, 18, 20]
   },
   {
     id: 20,
@@ -934,9 +934,9 @@ const displayGameCard = card => {
     <div class="card-container">
     <div class="card">
       ${card.name}
+      <p>Damage: ${card.baseDamage}</p>
     </div>
     </div>`;
-    modalBody.innerHTML += `<p>Damage: ${card.baseDamage}</p>`;
     if (card.modifierDamage != null) {
       modalBody.innerHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
     }
@@ -945,16 +945,17 @@ const displayGameCard = card => {
     modalBody.innerHTML = `
     <div class="card-container">
     <div class="card">
-      F-${card.failureValue}
+      Failure
+      <p>Points: ${card.failureValue}</p>
     </div>
     </div>`;
-    modalBody.innerHTML += `<p>Failure Points: ${card.failureValue}</p>`;
     modalFooter.innerHTML = `<h3>Failure cards can help prevent murder!</h3>`;
   } else {
     modalBody.innerHTML = `
     <div class="card-container">
     <div class="card">
-      ${card.name}
+      Movement
+      <p>${card.name}</p>
     </div>
     </div>`;
     modalBody.innerHTML += `<p>${card.description}</p>`;
