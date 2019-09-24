@@ -1,0 +1,22 @@
+{
+  "name": "kill-doctor-lucky-server",
+  "version": "1.0.0",
+  "description": "A web server for hosting kill-doctor-lucky game session",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arevi/Kill-Doctor-Lucky-Web-Port.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arevi/Kill-Doctor-Lucky-Web-Port/issues"
+  },
+  "homepage": "https://github.com/arevi/Kill-Doctor-Lucky-Web-Port#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
