@@ -908,6 +908,15 @@ const getRoomID = name => {
 // Returns true, if visible, or false if not visible
 const checkLineOfSight = roomID => {
   let visible = false;
+
+  let playersInRoom = gameData.Players.filter(
+    player => player.location == roomID
+  ).length;
+
+  if (playersInRoom != 1) {
+    visible = true;
+  }
+
   const occupiedRooms = gameData.Players.map(player => player.location);
   occupiedRooms.forEach(room => {
     if (rooms[roomID].lineOfSight.includes(room)) {
