@@ -16,7 +16,7 @@ const killButton = document.querySelector('.kill-button');
 const endTurnButton = document.querySelector('.end-turn-button');
 const turnIndicator = document.getElementById('current-turn');
 const turnsElapsedIndicator = document.getElementById('game-turn-count');
-const cardContrainerUI = document.getElementById('controls-cards');
+const cardContainerUI = document.getElementById('controls-cards');
 
 const rooms = [
   {
@@ -725,6 +725,47 @@ const updatePlayerList = () => {
   );
 };
 
+const renderPlayerCard = player => {
+  cardContainerUI.innerHTML = '';
+  if (player.moveCards.length != 0) {
+    player.moveCards.forEach(card => {
+      cardContainerUI.innerHTML += `<div class="card" id=${card.id}>Movement<p>${card.name}</div>`;
+    });
+  }
+
+  cardContainerUI
+    .querySelectorAll('.card')
+    .forEach(card => card.addEventListener('click', useMoveCard));
+};
+
+const useMoveCard = e => {
+  let card = moveCards[e.target.id];
+  let selection;
+
+  modalHeader.innerHTML = `<h2>Who would you like to move?`;
+  modalBody.innerHTML = `
+    <div class="card-container>
+      <div class="card" id="Yourself">Yourself</div>
+      <div class="card" id="Lucky">Dr. Lucky</div>
+    </div><div class="startGameBtn Btn">Cancel</div>`;
+
+  modalFooter.innerHTML = `Movement`;
+  modal.style.display = 'block';
+
+  document
+    .getElementById('Yourself')
+    .addEventListener('click', moveYourself(card));
+
+  document.getElementById('Lucky').addEventListener('click', moveLucky(card));
+
+  document
+    .querySelector('.Btn')
+    .addEventListener('click', () => (modal.style.display = 'none'));
+};
+
+const moveYourself = (e, card) => {};
+
+const moveLucky = (e, card) => {};
 // Renders the doctor lucky sprite on the game board
 // Removes any previous doctor lucky sprites if they exist
 const renderDoctorLucky = () => {
@@ -771,6 +812,7 @@ const updateTurnsElapsed = () => {
 // Using the player location, references the list of movable rooms
 // Assigns movable rooms a class to highlight them and a click handler to move player
 const renderMovableRooms = player => {
+  renderPlayerCard(player);
   let playerLocation = player.location;
   rooms[playerLocation].visitableRooms.forEach(room => {
     let roomName = getRoomName(room);
@@ -849,7 +891,6 @@ const nextTurn = async (e, luckyTrain) => {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
     turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   }
-
   console.log(await sendData());
 };
 
