@@ -18,6 +18,8 @@ const turnIndicator = document.getElementById('current-turn');
 const turnsElapsedIndicator = document.getElementById('game-turn-count');
 const cardContainerUI = document.getElementById('controls-cards');
 
+const socket = io();
+
 const rooms = [
   {
     id: 0,
@@ -1312,3 +1314,7 @@ const getData = async () => {
 window.onload = () => {
   displayGameSetup();
 };
+
+socket.on('connect', () => {
+  console.log(`Connected with ID: ${socket.id}`);
+});
