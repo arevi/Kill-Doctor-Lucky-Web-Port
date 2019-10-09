@@ -390,6 +390,118 @@ body {
   padding-right: 5px;
 }
 
+.Btn {
+  text-align: center;
+  border: 2px solid #d11600;
+  margin: 0 auto;
+  width: 20%;
+  padding: 5px 5px;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: ease-in 0.2s;
+  user-select: none;
+}
+
+.Btn:hover {
+  background-color: #d11600;
+  color: white;
+  transition: ease-in 0.2s;
+}
+
+.loader {
+  font-size: 10px;
+  margin: 50px auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #d11600;
+  background: -moz-linear-gradient(
+    left,
+    #d11600 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -webkit-linear-gradient(
+    left,
+    #d11600 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: -o-linear-gradient(left, #d11600 10%, rgba(255, 255, 255, 0) 42%);
+  background: -ms-linear-gradient(
+    left,
+    #d11600 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  background: linear-gradient(
+    to right,
+    #d11600 10%,
+    rgba(255, 255, 255, 0) 42%
+  );
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #d11600;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: #f4f4f4;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+input[type='text'] {
+  border: 1px solid #222222;
+  border-radius: 2px;
+  height: 20px;
+  outline: none;
+}
+
+input[type='text']:focus,
+input[type='text']:hover {
+  border: 1px solid red;
+}
+
 .startGameBtn {
   text-align: center;
   border: 2px solid #d11600;
@@ -408,6 +520,11 @@ body {
   background-color: #d11600;
   color: white;
   transition: ease-in 0.2s;
+}
+
+.gameMode-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .player {

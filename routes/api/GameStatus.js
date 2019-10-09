@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-// Defines the variable that will hold gameData being sent over
-let gameData;
+let gameData = require('../../data/gameData');
 
 // Route to return the game data by itself to allow public access
 router.get('/', (req, res) => {

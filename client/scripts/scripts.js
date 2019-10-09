@@ -620,8 +620,11 @@ const moveCards = [
   }
 ];
 
-const gameData = {
+let gameData = {
   playerCount: 4,
+  gameType: null,
+  gameSession: null,
+  gameStatus: null,
   Players: [],
   DoctorLucky: {
     location: null
@@ -649,6 +652,7 @@ class Player {
     this.weaponCards = [];
     this.failureCards = [];
     this.moveCards = [];
+    this.socketID = null;
   }
 }
 
@@ -676,6 +680,10 @@ const startNewGame = () => {
   renderDoctorLucky();
   renderPlayers();
   updatePlayerList();
+
+  if (gameData.gameType == 'online') {
+    updateGame();
+  }
 
   turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
@@ -902,7 +910,9 @@ const nextTurn = async (e, luckyTrain) => {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
     turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   }
-  console.log(await sendData());
+  if (gameData.gameType == 'online') {
+    updateGame();
+  }
 };
 
 // Takes in a room ID and filters out the rooms array to return tile name
@@ -1236,11 +1246,8 @@ const clearSelectedCards = () => {
 // Function to display the modal that configures game
 // Plays background music during game setup
 const displayGameSetup = () => {
-  document.getElementById('menu-music').muted = false;
   modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
-  modalBody.innerHTML = `<p class="welcomeMessage">Welcome to Lucky Mansion, a sprawling country estate filled with unusual weapons, good hiding places, and craven killers. Killers like you.
-  <br>
-  <br>
+  modalBody.innerHTML = `<p class="welcomeMessage">
   How many guests are we hosting tonight?</p>
   
   <div class="playerCounter-container">
@@ -1263,10 +1270,178 @@ const displayGameSetup = () => {
     .querySelector('.decrementBtn')
     .addEventListener('click', () => decrementPlayerCount());
 
-  document
-    .querySelector('.startGameBtn')
-    .addEventListener('click', () => startNewGame());
+  document.querySelector('.startGameBtn').addEventListener('click', () => {
+    if (gameData.gameType == 'local') {
+      startNewGame();
+    } else {
+      startOnlineGame();
+    }
+  });
 };
+
+const startOnlineGame = () => {};
+
+const displayWaitingForTurn = () => {
+  modalHeader.innerHTML = `<h2>Other players are plotting</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">You wait patiently as the others move around the mansion and make their moves...
+  <div class="loader">Loading...</div>
+  </p>
+  `;
+  modalFooter.innerHTML = `<h3>Waiting for turn</h3>`;
+  modal.style.display = 'block';
+};
+
+const displayWaitingForPlayers = () => {
+  let players = 1;
+  modalHeader.innerHTML = `<h2>Waiting for guests</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">You wait patiently as the rest of your party has yet to arrive...perhaps they should use this code: ${gameData.gameSession}</p>
+  <div class="loader">Loading...</div>
+  <p class="welcomeMessage">
+  There are currently <span id="playerCount">${players}</span> / ${gameData.playerCount} players in attendance.
+  </p>
+  `;
+  modalFooter.innerHTML = `<h3>Waiting for players</h3>`;
+  modal.style.display = 'block';
+
+  let playerCountChecker = setInterval(() => {
+    socket.emit('checkPlayerCount', { id: gameData.gameSession });
+  }, 1000);
+
+  socket.on('returnPlayerCount', data => {
+    console.log(data.playerCount);
+    players = data.playerCount;
+    document.getElementById('playerCount').innerText = players;
+  });
+
+  socket.on('gameReady', data => {
+    gameData = data.gameData;
+    clearInterval(playerCountChecker);
+    startNewGame();
+  });
+};
+
+const gameModeSelection = () => {
+  document.getElementById('menu-music').muted = false;
+  modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">Welcome to Lucky Mansion, a sprawling country estate filled with unusual weapons, good hiding places, and craven killers. Killers like you.
+  <br>
+  <br>
+  How are we going to be attending the festivities tonight?
+  <br>
+  <br>
+  <div class="gameMode-container">
+  <span class="Btn" id="localBtn">Local</span>
+  <span class="Btn" id="onlineBtn">Online</span>
+  </div>
+  </p>
+  `;
+  modalFooter.innerHTML = `<h3>Game Setup</h3>`;
+  modal.style.display = 'block';
+  document.getElementById('localBtn').addEventListener('click', () => {
+    gameData.gameType = 'local';
+    displayGameSetup();
+  });
+
+  document.getElementById('onlineBtn').addEventListener('click', () => {
+    gameData.gameType = 'online';
+    displayOnlineGameSelection();
+  });
+};
+
+const displayOnlineGameSelection = () => {
+  modalHeader.innerHTML = `<h2>Online Game</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">Are you looking to host your own party, or will you be joining another party dying to make your acquaintance?
+  <br>
+  <br>
+  <div class="gameMode-container">
+  <span class="Btn" id="createGameBtn">Create</span>
+  <span class="Btn" id="joinGameBtn">Join</span>
+  </div>
+  </p>
+  `;
+  modalFooter.innerHTML = `<h3>Selection</h3>`;
+  modal.style.display = 'block';
+
+  document
+    .getElementById('createGameBtn')
+    .addEventListener('click', displayCreateGameMenu);
+
+  document
+    .getElementById('joinGameBtn')
+    .addEventListener('click', displayJoinGameMenu);
+};
+
+const displayCreateGameMenu = () => {
+  modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">
+  How many guests are we hosting tonight?</p>
+  
+  <div class="playerCounter-container">
+   <span class="decrementBtn"> - </span>
+   <span class="playerCount">${gameData.playerCount}</span>
+   <span class="incrementBtn"> + </span>
+  </div>
+
+  <div class="Btn" id="startGameBtn">
+    Start Game
+  </div>
+  `;
+  modalFooter.innerHTML = `<h3>Game Setup</h3>`;
+  modal.style.display = 'block';
+
+  document
+    .querySelector('.incrementBtn')
+    .addEventListener('click', () => incrementPlayerCount());
+  document
+    .querySelector('.decrementBtn')
+    .addEventListener('click', () => decrementPlayerCount());
+
+  document.getElementById('startGameBtn').addEventListener('click', () => {
+    let gameID = Math.floor(Math.random() * 1000000000);
+    gameData.gameSession = gameID;
+    gameData.gameStatus = 'preparing';
+    socket.emit('createSession', {
+      sessionID: gameID,
+      gameData: gameData,
+      playerID: socket.id
+    });
+    displayWaitingForPlayers();
+  });
+};
+
+const displayJoinGameMenu = () => {
+  modalHeader.innerHTML = `<h2>Join A Game</h2>`;
+  modalBody.innerHTML = `<p class="welcomeMessage">
+  Who will you be joining tonight for the event?
+  <br>
+  <br>
+  <input type="text" id="gameIDTextBox" />
+
+  </p>
+
+  <div class="Btn" id="joinGameBtn">
+    Join Game
+  </div>
+  `;
+  modalFooter.innerHTML = `<h3>Game Setup</h3>`;
+  modal.style.display = 'block';
+
+  document.getElementById('joinGameBtn').addEventListener('click', () => {
+    let gameIDTextBox = document.getElementById('gameIDTextBox');
+    socket.emit('playerJoin', {
+      gameID: gameIDTextBox.value,
+      playerID: socket.id
+    });
+    socket.on('joinResult', data => {
+      if (data.result) {
+        gameData = data.gameData;
+        displayWaitingForPlayers();
+      }
+    });
+  });
+};
+
+const joinOnlineGame = id => {};
 
 //Function to increment player count
 // Updates player count and visual representation in game setup modal
@@ -1286,35 +1461,42 @@ const decrementPlayerCount = () => {
   }
 };
 
-const sendData = async () => {
-  const settings = {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*'
-    },
-    body: JSON.stringify(gameData)
-  };
-  try {
-    const res = await fetch('api/gamedata', settings);
-    return await res.json();
-  } catch (e) {
-    return e;
-  }
-};
-
-const getData = async () => {
-  let res = await fetch('api/gamedata');
-  let data = await res.json();
-  return data;
-};
-
 // On load handler for the window to show game setup screen
 window.onload = () => {
-  displayGameSetup();
+  gameModeSelection();
+};
+
+const updateGame = () => {
+  socket.emit('updateGame', {
+    gameID: gameData.gameSession,
+    gameData: gameData
+  });
 };
 
 socket.on('connect', () => {
   console.log(`Connected with ID: ${socket.id}`);
+});
+
+socket.on('disconnect', () => {
+  console.log(`Disconnected user: ${socket.id}`);
+});
+
+socket.on('gameReady', data => {
+  gameData = data.gameData;
+  console.log('game Ready');
+});
+
+socket.on('waitForTurn', data => {
+  gameData = data.gameData;
+  renderPlayers();
+  renderDoctorLucky();
+  displayWaitingForTurn();
+});
+
+socket.on('activePlayer', data => {
+  gameData = data.gameData;
+  renderPlayers();
+  renderDoctorLucky();
+  modal.style.display = 'none';
+  renderMovableRooms(gameData.Players[gameData.currentTurn]);
 });
