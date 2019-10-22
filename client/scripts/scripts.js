@@ -909,6 +909,7 @@ const nextTurn = async (e, luckyTrain) => {
   } else {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
     turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
+    moveDoctorLucky();
   }
   if (gameData.gameType == 'online') {
     updateGame();
