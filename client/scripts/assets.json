@@ -1,0 +1,101 @@
+{
+  "rooms": [
+    {
+      "id": 0,
+      "name": "Drawing Room"
+    },
+    {
+      "id": 1,
+      "name": "Parlor"
+    },
+    {
+      "id": 2,
+      "name": "Billiard Room"
+    },
+    {
+      "id": 3,
+      "name": "Dining Hall"
+    },
+    {
+      "id": 4,
+      "name": "Sitting Room"
+    },
+    {
+      "id": 5,
+      "name": "Trompy Room"
+    },
+    {
+      "id": 6,
+      "name": "Green House"
+    },
+    {
+      "id": 7,
+      "name": "Winter Garden"
+    },
+    {
+      "id": 8,
+      "name": "Kitchen"
+    },
+    {
+      "id": 9,
+      "name": "Lancaster Room"
+    },
+    {
+      "id": 10,
+      "name": "Master Suite"
+    },
+    {
+      "id": 11,
+      "name": "Nursery"
+    },
+    {
+      "id": 12,
+      "name": "Armory"
+    },
+    {
+      "id": 13,
+      "name": "Library"
+    },
+    {
+      "id": 14,
+      "name": "Tennessee Room"
+    },
+    {
+      "id": 15,
+      "name": "Lilac Room"
+    },
+    {
+      "id": 16,
+      "name": "Servants Quarters"
+    },
+    {
+      "id": 17,
+      "name": "Hedge Maze"
+    },
+    {
+      "id": 18,
+      "name": "Carriage House"
+    },
+    {
+      "id": 19,
+      "name": "Piazza"
+    },
+    {
+      "id": 20,
+      "name": "Foyer"
+    },
+    {
+      "id": 21,
+      "name": "Wine Cellar"
+    },
+    {
+      "id": 22,
+      "name": "Gallery"
+    },
+    {
+      "id": 23,
+      "name": "White Room"
+    }
+  ],
+  "cards": []
+}
