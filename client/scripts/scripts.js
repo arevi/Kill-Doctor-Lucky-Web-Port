@@ -745,7 +745,7 @@ const renderPlayerCard = player => {
 
   cardContainerUI
     .querySelectorAll('.card')
-    .forEach(card => card.addEventListener('click', useMoveCard));
+    .forEach(card => card.addEventListener('click', useMoveCard()));
 };
 
 const useMoveCard = e => {
@@ -1250,7 +1250,7 @@ const displayGameSetup = () => {
   modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
   modalBody.innerHTML = `<p class="welcomeMessage">
   How many guests are we hosting tonight?</p>
-  
+
   <div class="playerCounter-container">
    <span class="decrementBtn"> - </span>
    <span class="playerCount">${gameData.playerCount}</span>
@@ -1376,7 +1376,7 @@ const displayCreateGameMenu = () => {
   modalHeader.innerHTML = `<h2>Kill Doctor Lucky</h2>`;
   modalBody.innerHTML = `<p class="welcomeMessage">
   How many guests are we hosting tonight?</p>
-  
+
   <div class="playerCounter-container">
    <span class="decrementBtn"> - </span>
    <span class="playerCount">${gameData.playerCount}</span>
@@ -1451,6 +1451,10 @@ const incrementPlayerCount = () => {
     gameData.playerCount++;
     document.querySelector('.playerCount').textContent = gameData.playerCount;
   }
+
+  if(gameData.playerCount == 8) {
+    document.getElementsByClassName('incrementBtn').innerText = '';
+  }
 };
 
 //Function to decrement player count
@@ -1459,6 +1463,10 @@ const decrementPlayerCount = () => {
   if (gameData.playerCount !== 2) {
     gameData.playerCount--;
     document.querySelector('.playerCount').textContent = gameData.playerCount;
+  }
+
+  if(gameData.playerCount == 2) {
+    document.getElementsByClassName('decrementBtn').innerText = '';
   }
 };
 
