@@ -39,6 +39,14 @@ io.on('connection', socket => {
     gameData.onlineGames.playersConnected = gameData.onlineGames.playersConnected.filter(
       id => id != socket.id
     );
+
+    gameData.onlineGames.sessions.forEach(session => {
+      if (session.players.includes(socket.id)) {
+        session.players.forEach(player => {
+          io.to(player).emit('playerDisconnected');
+        });
+      }
+    });
   });
 
   // Handles creating a game session with data that is passed in
@@ -93,6 +101,56 @@ io.on('connection', socket => {
         io.to(session.players[currentPlayer]).emit('activePlayer', {
           gameData: session.gameData
         });
+      }
+    });
+  });
+
+  socket.on('murderAttempt', data => {
+    gameData.onlineGames.sessions.forEach(session => {
+      if (session.id == data.gameID) {
+        session.gameData = data.gameData;
+        let defenders = session.players.filter(
+          session => session != data.player
+        );
+
+        defenders.forEach(defender => {
+          io.to(defender).emit('attemptFailure', {
+            gameData: session.gameData,
+            player: session.players.indexOf(defender)
+          });
+        });
+      }
+    });
+  });
+
+  socket.on('contributeFailure', data => {
+    gameData.onlineGames.sessions.forEach(session => {
+      if (session.id == data.gameID) {
+        session.gameData.MurderAttempt.failurePoints += data.failurePoints;
+        session.gameData.MurderAttempt.defenders.pop();
+
+        if (session.gameData.MurderAttempt.defenders.length == 0) {
+          session.players.forEach(player => {
+            io.to(player).emit('calculateMurder', {
+              gameData: session.gameData
+            });
+          });
+        }
+      }
+    });
+  });
+
+  socket.on('murderFailed', data => {
+    gameData.onlineGames.sessions.forEach(session => {
+      if (session.id == data.gameID) {
+        session.gameData = data.gameData;
+        if (
+          session.players.indexOf(data.player) == session.gameData.currentTurn
+        ) {
+          io.to(data.player).emit('continueTurn', {
+            gameData: session.gameData
+          });
+        }
       }
     });
   });

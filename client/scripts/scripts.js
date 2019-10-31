@@ -745,7 +745,7 @@ const renderPlayerCard = player => {
 
   cardContainerUI
     .querySelectorAll('.card')
-    .forEach(card => card.addEventListener('click', useMoveCard()));
+    .forEach(card => card.addEventListener('click', useMoveCard));
 };
 
 const useMoveCard = e => {
@@ -1083,7 +1083,15 @@ const displayFailureCard = player => {
   document.querySelector('.Btn').addEventListener('click', () => {
     gameData.MurderAttempt.failurePoints += failureContribution;
     modal.style.display = 'none';
-    failureAttempt();
+    if (gameData.gameType != 'online') {
+      failureAttempt();
+    } else {
+      socket.emit('contributeFailure', {
+        gameID: gameData.gameSession,
+        failurePoints: failureContribution
+      });
+      displayWaitingForTurn();
+    }
   });
 };
 
@@ -1136,6 +1144,14 @@ const murderFailure = () => {
     modal.style.display = 'none';
     gameData.Players[gameData.MurderAttempt.AttackingPlayer].spite++;
     resetMurderAttemptData();
+    if (gameData.gameType == 'online') {
+      displayWaitingForTurn();
+      socket.emit('murderFailed', {
+        gameID: gameData.gameSession,
+        gameData: gameData,
+        player: socket.id
+      });
+    }
   });
 };
 
@@ -1145,7 +1161,7 @@ const resetMurderAttemptData = () => {
   gameData.MurderAttempt.AttackingPlayer = null;
   gameData.MurderAttempt.CurrentDefendingPlayer = null;
   gameData.MurderAttempt.damagePoints = null;
-  gameData.MurderAttempt.defenders = null;
+  gameData.MurderAttempt.defenders = [];
   gameData.MurderAttempt.location = null;
   gameData.MurderAttempt.failurePoints = null;
 };
@@ -1155,7 +1171,8 @@ const resetMurderAttemptData = () => {
 const murderSuccess = player => {
   modalHeader.innerHTML = `<h2>Lucky is dead!</h2>`;
   modalBody.innerHTML = `
-  <p>Dr. Lucky has been murdered, now one is quite sure who has done it but Player ${player.id +
+  <p>Dr. Lucky has been murdered, now one is quite sure who has done it but Player ${gameData
+    .MurderAttempt.AttackingPlayer +
     1} sure did leave the mansion quite quickly after. Whatever the matter, you are quite happy that the man is finally no more.</p>
   <div class="startGameBtn Btn">
   New Game
@@ -1165,7 +1182,7 @@ const murderSuccess = player => {
 
   document
     .querySelector('.startGameBtn')
-    .addEventListener('click', displayGameSetup);
+    .addEventListener('click', () => location.reload());
 };
 
 // Displays the card that will take in the proper elements to display
@@ -1233,7 +1250,16 @@ const murderAttempt = () => {
       }
     });
 
-    failureAttempt();
+    if (gameData.gameType != 'online') {
+      failureAttempt();
+    } else {
+      socket.emit('murderAttempt', {
+        gameID: gameData.gameSession,
+        gameData: gameData,
+        player: socket.id
+      });
+      displayWaitingForTurn();
+    }
   });
 };
 
@@ -1442,7 +1468,20 @@ const displayJoinGameMenu = () => {
   });
 };
 
-const joinOnlineGame = id => {};
+const playerDisconnected = () => {
+  modalHeader.innerHTML = `<h2>Someone is lost!</h2>`;
+  modalBody.innerHTML = `
+  <p>A guest of the mansion has unfortunately disappeared into thin air, having felt that the connection is lost. You leave on your way, and we hope to see you again.</p>
+  <div class="startGameBtn Btn">
+  New Game
+  </div>`;
+  modalFooter.innerHTML = `<h3>Game Over</h3>`;
+  modal.style.display = 'block';
+
+  document
+    .querySelector('.startGameBtn')
+    .addEventListener('click', () => location.reload());
+};
 
 //Function to increment player count
 // Updates player count and visual representation in game setup modal
@@ -1452,7 +1491,7 @@ const incrementPlayerCount = () => {
     document.querySelector('.playerCount').textContent = gameData.playerCount;
   }
 
-  if(gameData.playerCount == 8) {
+  if (gameData.playerCount == 8) {
     document.getElementsByClassName('incrementBtn').innerText = '';
   }
 };
@@ -1465,7 +1504,7 @@ const decrementPlayerCount = () => {
     document.querySelector('.playerCount').textContent = gameData.playerCount;
   }
 
-  if(gameData.playerCount == 2) {
+  if (gameData.playerCount == 2) {
     document.getElementsByClassName('decrementBtn').innerText = '';
   }
 };
@@ -1508,4 +1547,27 @@ socket.on('activePlayer', data => {
   renderDoctorLucky();
   modal.style.display = 'none';
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
+});
+
+socket.on('attemptFailure', data => {
+  gameData = data.gameData;
+  renderPlayers();
+  renderDoctorLucky();
+  modal.style.display = 'none';
+  displayFailureCard(gameData.Players[data.player]);
+});
+
+socket.on('calculateMurder', data => {
+  gameData = data.gameData;
+  modal.style.display = 'none';
+  calculuateMurderChance();
+});
+
+socket.on('continueTurn', data => {
+  gameData = data.gameData;
+  modal.style.display = 'none';
+});
+
+socket.on('playerDisconnected', data => {
+  playerDisconnected();
 });
