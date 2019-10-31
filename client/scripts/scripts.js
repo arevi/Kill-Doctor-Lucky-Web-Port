@@ -1546,6 +1546,7 @@ socket.on('activePlayer', data => {
   renderPlayers();
   renderDoctorLucky();
   modal.style.display = 'none';
+  resetMovableRooms();
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
 });
 
