@@ -1153,6 +1153,8 @@ const murderFailure = () => {
       });
     }
   });
+
+  killButton.disabled = true;
 };
 
 // Resets all data associated with a murder attempt to null
