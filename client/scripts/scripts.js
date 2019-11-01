@@ -835,9 +835,6 @@ const renderMovableRooms = player => {
   rooms[playerLocation].lineOfSight.forEach(room => {
     let roomName = getRoomName(room);
     document.querySelector(`#${roomName}`).classList.add('in-sight');
-    document
-      .querySelector(`#${roomName}`)
-      .addEventListener('click', movePlayer);
   });
 };
 
