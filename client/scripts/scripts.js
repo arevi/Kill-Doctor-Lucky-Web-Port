@@ -1496,7 +1496,11 @@ const incrementPlayerCount = () => {
   }
 
   if (gameData.playerCount == 8) {
-    document.getElementsByClassName('incrementBtn').innerText = '';
+    document.querySelector('.incrementBtn').classList.add('hidden');
+  }
+
+  if (document.querySelector('.decrementBtn').classList.contains('hidden')) {
+    document.querySelector('.decrementBtn').classList.remove('hidden');
   }
 };
 
@@ -1509,7 +1513,11 @@ const decrementPlayerCount = () => {
   }
 
   if (gameData.playerCount == 2) {
-    document.getElementsByClassName('decrementBtn').innerText = '';
+    document.querySelector('.decrementBtn').classList.add('hidden');
+  }
+
+  if (document.querySelector('.incrementBtn').classList.contains('hidden')) {
+    document.querySelector('.incrementBtn').classList.remove('hidden');
   }
 };
 
