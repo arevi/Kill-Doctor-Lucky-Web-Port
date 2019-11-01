@@ -668,10 +668,8 @@ const startNewGame = () => {
 
   //Generate unique players and insert them into gameData object
   // Assigns ID based on increments of i, assigns color randomly
-  for (i = 0; i < gameData.playerCount; i++) {
-    gameData.Players.push(
-      new Player(i, '#' + (((1 << 24) * Math.random()) | 0).toString(16))
-    );
+  for (let index = 0; index < gameData.playerCount; index++) {
+    gameData.Players.push(new Player(index, generateRandomColor()));
   }
 
   // Sets a random location for Doctor Lucky
@@ -685,6 +683,16 @@ const startNewGame = () => {
     updateGame();
   }
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
+};
+
+const generateRandomColor = () => {
+  let options = '0123456789ABCDEF';
+  let color = '#';
+  for (let index = 0; index < 6; index++) {
+    color += options[Math.floor(Math.random() * 16)];
+  }
+
+  return color;
 };
 
 // Iterates through the game data, to nest players within game tiles
