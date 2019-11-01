@@ -55,7 +55,6 @@ io.on('connection', socket => {
     game.players.push(data.playerID);
     game.status = 'preparing';
     gameData.onlineGames.sessions.push(game);
-    console.log(gameData.onlineGames.sessions);
   });
 
   socket.on('playerJoin', data => {
@@ -66,7 +65,6 @@ io.on('connection', socket => {
       ) {
         session.players.push(data.playerID);
         socket.emit('joinResult', { result: true, gameData: session.gameData });
-        console.log(session);
         if (session.players.length == session.gameData.playerCount) {
           session.gameData.gameStatus = 'ready';
           session.players.forEach(player => {
@@ -94,6 +92,7 @@ io.on('connection', socket => {
       if (session.id == data.gameID) {
         session.gameData = data.gameData;
         let currentPlayer = session.gameData.currentTurn;
+
         session.players.forEach(player => {
           io.to(player).emit('waitForTurn', { gameData: session.gameData });
         });

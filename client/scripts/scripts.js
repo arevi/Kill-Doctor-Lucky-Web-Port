@@ -15,7 +15,7 @@ const playerList = document.getElementById('players-list');
 const killButton = document.querySelector('.kill-button');
 const endTurnButton = document.querySelector('.end-turn-button');
 const turnIndicator = document.getElementById('current-turn');
-const turnsElapsedIndicator = document.getElementById('game-turn-count');
+const currentRoundIndicator = document.getElementById('game-turn-count');
 const cardContainerUI = document.getElementById('controls-cards');
 
 const socket = io();
@@ -638,7 +638,7 @@ let gameData = {
     failurePoints: null
   },
   currentTurn: 0,
-  turnsElapsed: 0
+  currentRound: 0
 };
 
 class Player {
@@ -662,8 +662,8 @@ const startNewGame = () => {
   gameData.Players = [];
   gameData.DoctorLucky.location = null;
   gameData.currentTurn = 0;
-  gameData.turnsElapsed = 0;
-  turnsElapsedIndicator.innerText = `Round: ${gameData.turnsElapsed}`;
+  gameData.currentRound = 1;
+  currentRoundIndicator.innerText = `Round: ${gameData.currentRound}`;
   modal.style.display = 'none';
 
   //Generate unique players and insert them into gameData object
@@ -816,18 +816,17 @@ const moveDoctorLucky = id => {
   }
 
   renderDoctorLucky();
-  gameData.turnsElapsed++;
-  updateTurnsElapsed();
 };
 
-const updateTurnsElapsed = () => {
-  turnsElapsedIndicator.innerText = `Round: ${gameData.turnsElapsed}`;
+const updatecurrentRound = () => {
+  currentRoundIndicator.innerText = `Round: ${gameData.currentRound}`;
 };
 
 // Takes a player object and retrieves the location
 // Using the player location, references the list of movable rooms
 // Assigns movable rooms a class to highlight them and a click handler to move player
 const renderMovableRooms = player => {
+  updatecurrentRound();
   renderPlayerCard(player);
   let playerLocation = player.location;
   turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
@@ -906,8 +905,9 @@ const nextTurn = async (e, luckyTrain) => {
   }
 
   if (gameData.currentTurn == gameData.playerCount) {
-    moveDoctorLucky();
+    gameData.currentRound++;
     gameData.currentTurn = 0;
+    moveDoctorLucky();
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
   } else {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
