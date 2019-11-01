@@ -17,4 +17,4 @@ https://kill-doctor-lucky.herokuapp.com/
 
 # Screenshot
 
-[Screenshot](https://i.imgur.com/Mkq2WU0.png)
+![Screenshot](https://i.imgur.com/Mkq2WU0.png)
