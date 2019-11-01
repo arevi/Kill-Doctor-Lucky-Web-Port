@@ -1200,7 +1200,7 @@ const murderAttempt = () => {
   let player = gameData.Players[gameData.currentTurn];
   let damage = 0;
 
-  let weaponHTML;
+  let weaponHTML = '';
   if (player.weaponCards.length == 0) {
     weaponHTML += `It doesn't look like you have any weapons...`;
   } else {
