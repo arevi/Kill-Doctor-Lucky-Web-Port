@@ -684,8 +684,6 @@ const startNewGame = () => {
   if (gameData.gameType == 'online') {
     updateGame();
   }
-
-  turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
 };
 
@@ -824,6 +822,7 @@ const updateTurnsElapsed = () => {
 const renderMovableRooms = player => {
   renderPlayerCard(player);
   let playerLocation = player.location;
+  turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
   rooms[playerLocation].visitableRooms.forEach(room => {
     let roomName = getRoomName(room);
     document.querySelector(`#${roomName}`).classList.add('possible-move');
@@ -901,11 +900,9 @@ const nextTurn = async (e, luckyTrain) => {
   if (gameData.currentTurn == gameData.playerCount) {
     moveDoctorLucky();
     gameData.currentTurn = 0;
-    turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
   } else {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
-    turnIndicator.innerText = `It's Player ${gameData.currentTurn + 1}'s turn!`;
     moveDoctorLucky();
   }
   if (gameData.gameType == 'online') {
@@ -1545,7 +1542,6 @@ socket.on('activePlayer', data => {
   renderPlayers();
   renderDoctorLucky();
   modal.style.display = 'none';
-  resetMovableRooms();
   renderMovableRooms(gameData.Players[gameData.currentTurn]);
 });
 
