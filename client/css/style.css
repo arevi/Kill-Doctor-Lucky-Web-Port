@@ -502,26 +502,6 @@ input[type='text']:hover {
   border: 1px solid red;
 }
 
-.startGameBtn {
-  text-align: center;
-  border: 2px solid #d11600;
-  margin: 0 auto;
-  width: 20%;
-  padding: 5px 5px;
-  border-radius: 6px;
-  background-color: white;
-  cursor: pointer;
-  font-weight: bold;
-  transition: ease-in 0.2s;
-  user-select: none;
-}
-
-.startGameBtn:hover {
-  background-color: #d11600;
-  color: white;
-  transition: ease-in 0.2s;
-}
-
 .gameMode-container {
   display: flex;
   justify-content: space-between;

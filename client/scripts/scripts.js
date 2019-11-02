@@ -763,7 +763,7 @@ const useMoveCard = e => {
     <div class="card-container>
       <div class="card" id="Yourself">Yourself</div>
       <div class="card" id="Lucky">Dr. Lucky</div>
-    </div><div class="startGameBtn Btn">Cancel</div>`;
+    </div><div class="Btn">Cancel</div>`;
 
   modalFooter.innerHTML = `Movement`;
   modal.style.display = 'block';
@@ -1036,7 +1036,7 @@ const displayGameCard = card => {
     modalFooter.innerHTML = `<h3>Movement cards help you, or Lucky, move around.</h3>`;
   }
 
-  modalBody.innerHTML += `  <div class="startGameBtn Btn">
+  modalBody.innerHTML += `  <div class="Btn">
   Continue
   </div>`;
 
@@ -1068,7 +1068,7 @@ const displayFailureCard = player => {
   }
 
   modalBody.innerHTML = ` ${failureCardHTML}
-  <div class="startGameBtn Btn failure-contribute">
+  <div class="Btn failure-contribute">
   Continue
   </div>`;
   modalFooter.innerHTML = `<h3>Current Failure Points: ${gameData.MurderAttempt.failurePoints}</h3>`;
@@ -1136,7 +1136,7 @@ const murderFailure = () => {
   modalBody.innerHTML = `
   <p>Someone has made an attempt on Lucky's life but thankfully the group was able to defend him properly, no one is quite sure who the perpetrator was but Player ${gameData
     .MurderAttempt.AttackingPlayer + 1} sure looks suspicious.</p>
-  <div class="startGameBtn Btn">
+  <div class="Btn">
   Continue
   </div>`;
   modalFooter.innerHTML = `<h3>Murder thwarted!</h3>`;
@@ -1178,14 +1178,14 @@ const murderSuccess = player => {
   <p>Dr. Lucky has been murdered, now one is quite sure who has done it but Player ${gameData
     .MurderAttempt.AttackingPlayer +
     1} sure did leave the mansion quite quickly after. Whatever the matter, you are quite happy that the man is finally no more.</p>
-  <div class="startGameBtn Btn">
+  <div class="Btn">
   New Game
   </div>`;
   modalFooter.innerHTML = `<h3>Game Over</h3>`;
   modal.style.display = 'block';
 
   document
-    .querySelector('.startGameBtn')
+    .querySelector('.Btn')
     .addEventListener('click', () => location.reload());
 };
 
@@ -1194,7 +1194,7 @@ const murderSuccess = player => {
 const displayMurderCard = (body, footer) => {
   modalHeader.innerHTML = `<h2>What will be your weapon of choice?</h2>`;
   modalBody.innerHTML = `${body}
-  <div class="startGameBtn Btn">
+  <div class="Btn">
   Continue
   </div>`;
   modalFooter.innerHTML = `<h3>${footer}</h3>`;
@@ -1287,7 +1287,7 @@ const displayGameSetup = () => {
    <span class="incrementBtn"> + </span>
   </div>
 
-  <div class="startGameBtn Btn">
+  <div class="Btn">
     Start Game
   </div>
   `;
@@ -1301,7 +1301,7 @@ const displayGameSetup = () => {
     .querySelector('.decrementBtn')
     .addEventListener('click', () => decrementPlayerCount());
 
-  document.querySelector('.startGameBtn').addEventListener('click', () => {
+  document.querySelector('.Btn').addEventListener('click', () => {
     if (gameData.gameType == 'local') {
       startNewGame();
     } else {
@@ -1413,7 +1413,7 @@ const displayCreateGameMenu = () => {
    <span class="incrementBtn"> + </span>
   </div>
 
-  <div class="Btn" id="startGameBtn">
+  <div class="Btn" id="Btn">
     Start Game
   </div>
   `;
@@ -1427,7 +1427,7 @@ const displayCreateGameMenu = () => {
     .querySelector('.decrementBtn')
     .addEventListener('click', () => decrementPlayerCount());
 
-  document.getElementById('startGameBtn').addEventListener('click', () => {
+  document.getElementById('Btn').addEventListener('click', () => {
     let gameID = Math.floor(Math.random() * 1000000000);
     gameData.gameSession = gameID;
     gameData.gameStatus = 'preparing';
@@ -1476,14 +1476,14 @@ const playerDisconnected = () => {
   modalHeader.innerHTML = `<h2>Someone is lost!</h2>`;
   modalBody.innerHTML = `
   <p>A guest of the mansion has unfortunately disappeared into thin air, having felt that the connection is lost. You leave on your way, and we hope to see you again.</p>
-  <div class="startGameBtn Btn">
+  <div class="Btn">
   New Game
   </div>`;
   modalFooter.innerHTML = `<h3>Game Over</h3>`;
   modal.style.display = 'block';
 
   document
-    .querySelector('.startGameBtn')
+    .querySelector('.Btn')
     .addEventListener('click', () => location.reload());
 };
 
