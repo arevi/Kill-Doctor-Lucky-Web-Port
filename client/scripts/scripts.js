@@ -878,6 +878,12 @@ function movePlayer(event, roomID) {
   updatePlayerList();
 
   resetMovableRooms(playerID);
+  
+  if (
+    checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
+  ) {
+    DrawRandomCard(gameData.Players[gameData.currentTurn]);
+  }
 }
 
 // Function to reset all movable rooms before starting new turn
@@ -895,11 +901,6 @@ const resetMovableRooms = () => {
 // If all players have went, Doctor Lucky moves
 // Allows for lucky train to be passed in, allowing for another turn
 const nextTurn = async (e, luckyTrain) => {
-  if (
-    checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
-  ) {
-    DrawRandomCard(gameData.Players[gameData.currentTurn]);
-  }
   if (!luckyTrain) {
     gameData.currentTurn++;
   }
