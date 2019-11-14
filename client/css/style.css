@@ -1,3 +1,10 @@
+@font-face {
+    font-family: Willow;
+    src: local('Willow')
+         url('./willow.ttf')
+         format('trueType');
+}
+
 body {
   font-family: "Lato", sans-serif;
   margin: 0;
@@ -74,7 +81,11 @@ body {
 }
 
 #controls-info h1 {
-  font-size: 1.25em;
+  font-size: 2em;
+}
+
+#controls-info p {
+  font-size: 1.5em;
 }
 
 #controls-cards {
