@@ -721,9 +721,11 @@ const updatePlayerList = () => {
   playerList.innerHTML = '';
   playerList.innerHTML = `
 		<li>
-			<p>Doctor Lucky</p>
-			<div class="player-icon" style="background-color: #000;"></div>
-			<p>Location: </p><p>${rooms[gameData.DoctorLucky.location].name}</p>
+      <div class="player-icon" style="background-color: #000;"></div>
+      <div class="player-info">
+        <p>Doctor Lucky</p>
+  			<p>${rooms[gameData.DoctorLucky.location].name}</p>
+      </div>
 		</li>
 	`;
 
@@ -731,12 +733,14 @@ const updatePlayerList = () => {
     player =>
       (playerList.innerHTML += `
 		<li>
-			<p>Player ${player.id + 1}</p>
-			<div class="player-icon" style="background-color: ${player.color};"></div>
-			<p>Spite: ${player.spite}</p>
-			<p>
-        ${rooms[player.location].name}
-        </p>
+      <div class="player-icon" style="background-color: ${player.color};"></div>
+      <div class="player-info">
+        <p>Player ${player.id + 1}</p>
+  			<p>Spite: ${player.spite}</p>
+  			<p>
+          ${rooms[player.location].name}
+          </p>
+      </div>
 		</li>`)
   );
 };
@@ -878,7 +882,7 @@ function movePlayer(event, roomID) {
   updatePlayerList();
 
   resetMovableRooms(playerID);
-  
+
   if (
     checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
   ) {
