@@ -1,7 +1,6 @@
 @font-face {
-    font-family: Willow;
-    src: local('Willow')
-         url('./willow.ttf')
+    font-family: 'Willow';
+    src: url('./willow__.ttf')
          format('trueType');
 }
 
@@ -43,6 +42,9 @@ body {
   margin: 0;
   padding: 0;
   color: white;
+  background-image: url('../images/wood.jpg');
+  background-position: center;
+  background-size: cover;
   background-color: #270202;
 }
 
@@ -77,43 +79,52 @@ body {
 
 #players-list li:not(:first-of-type) {
   padding-top: 10px;
-  border-top: 2px solid white;
+  border-top: 5px double black;
 }
 
 #controls-panel {
   width: 20%;
   float: right;
+  background-image: url('../images/wood.jpg');
+  background-position: center;
+  background-size: cover;
   background-color: #270202;
 }
 
 #controls-info {
-  height: 15%;
+  height: 25%;
   color: white;
   text-align: center;
-}
-
-#controls-info h1 {
-  font-size: 2em;
+  margin-top: 0;
+  background-image: url('../images/sign2.png');
+  background-position: center;
+  background-size: cover;
 }
 
 #controls-info p {
   font-size: 1.5em;
 }
 
+#game-title {
+  font-family: 'Willow';
+  font-size: 2.5em;
+  margin-top: 0;
+}
+
 #controls-cards {
-  height: 60%;
-  border-top: 5px solid black;
+  height: 55%;
+  /*border-top: 5px solid black;*/
   border-bottom: 5px solid black;
 }
 
 #controls-actions {
-  height: 25%;
+  height: 20%;
   text-align: center;
 }
 
 #controls-actions button {
   width: 90%;
-  height: 15%;
+  height: 25%;
   color: white;
   background-color: #492ac3;
   border: 3px solid #011425;
