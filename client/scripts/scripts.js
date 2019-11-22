@@ -799,7 +799,7 @@ const renderDoctorLucky = () => {
     .insertAdjacentHTML(
       'beforeend',
       `
-      <div class="doctorLucky" style="background-color: black; border: 1px solid red"></div>
+      <div class="doctorLucky" style="background-color: black; border: 2px solid red"></div>
     `
     );
 
