@@ -26,168 +26,168 @@ const rooms = [
     name: 'Drawing Room',
     tileName: 'tile-drawing-room',
     lineOfSight: [1, 3, 5, 19, 20, 22],
-    visitableRooms: [1, 3, 5, 20]
+    visitableRooms: [0, 1, 3, 5, 20]
   },
   {
     id: 1,
     name: 'Parlor',
     tileName: 'tile-parlor',
     lineOfSight: [0, 2, 5, 16, 18],
-    visitableRooms: [0, 2, 14, 15, 16, 17, 18]
+    visitableRooms: [0, 1, 2, 14, 15, 16, 17, 18]
   },
   {
     id: 2,
     name: 'Billiard Room',
     tileName: 'tile-billiard-room',
     lineOfSight: [1, 3, 4],
-    visitableRooms: [1, 3, 14, 15, 16, 17]
+    visitableRooms: [1, 2, 3, 14, 15, 16, 17]
   },
   {
     id: 3,
     name: 'Dining Hall',
     tileName: 'tile-dining-hall',
     lineOfSight: [0, 2, 4, 19, 20, 22],
-    visitableRooms: [0, 1, 2, 4, 5, 7, 8, 9, 10, 14, 15, 16, 17, 22]
+    visitableRooms: [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 14, 15, 16, 17, 22]
   },
   {
     id: 4,
     name: 'Sitting Room',
     tileName: 'tile-sitting-room',
     lineOfSight: [2, 3, 5],
-    visitableRooms: [3, 5, 7, 8, 9, 10]
+    visitableRooms: [3, 4, 5, 7, 8, 9, 10]
   },
   {
     id: 5,
     name: 'Trompy Room',
     tileName: 'tile-trompy-room',
     lineOfSight: [0, 1, 4, 6, 8],
-    visitableRooms: [0, 3, 4, 6, 7, 8, 9, 10]
+    visitableRooms: [0, 3, 4, 5, 6, 7, 8, 9, 10]
   },
   {
     id: 6,
     name: 'Green House',
     tileName: 'tile-green-house',
     lineOfSight: [5, 7, 17, 18, 19],
-    visitableRooms: [5, 7, 19]
+    visitableRooms: [5, 6, 7, 19]
   },
   {
     id: 7,
     name: 'Winter Garden',
     tileName: 'tile-winter-garden',
     lineOfSight: [6, 8, 18, 19, 21],
-    visitableRooms: [3, 4, 5, 6, 8, 9, 10, 21]
+    visitableRooms: [3, 4, 5, 6, 7, 8, 9, 10, 21]
   },
   {
     id: 8,
     name: 'Kitchen',
     tileName: 'tile-kitchen',
     lineOfSight: [5, 7, 10, 11],
-    visitableRooms: [3, 4, 5, 7, 9, 10, 21]
+    visitableRooms: [3, 4, 5, 7, 8, 9, 10, 21]
   },
   {
     id: 9,
     name: 'Lancaster Room',
     tileName: 'tile-lancaster-room',
     lineOfSight: [10],
-    visitableRooms: [3, 4, 5, 7, 8, 10, 11]
+    visitableRooms: [3, 4, 5, 7, 8, 9, 10, 11]
   },
   {
     id: 10,
     name: 'Master Suite',
     tileName: 'tile-master-suite',
     lineOfSight: [8, 9, 11, 13, 22],
-    visitableRooms: [3, 4, 5, 7, 8, 9, 11]
+    visitableRooms: [3, 4, 5, 7, 8, 9, 10, 11]
   },
   {
     id: 11,
     name: 'Nursery',
     tileName: 'tile-nursery',
     lineOfSight: [10, 12, 13, 14, 22],
-    visitableRooms: [9, 10, 12, 22]
+    visitableRooms: [9, 10, 11, 12, 22]
   },
   {
     id: 12,
     name: 'Armory',
     tileName: 'tile-armory',
     lineOfSight: [11, 13, 14],
-    visitableRooms: [11, 13]
+    visitableRooms: [11, 12, 13]
   },
   {
     id: 13,
     name: 'Library',
     tileName: 'tile-library',
     lineOfSight: [10, 11, 12, 14, 22],
-    visitableRooms: [12, 14, 15, 22]
+    visitableRooms: [12, 13, 14, 15, 22]
   },
   {
     id: 14,
     name: 'Tennessee Room',
     tileName: 'tile-tennessee-room',
     lineOfSight: [11, 12, 13, 15, 16],
-    visitableRooms: [1, 2, 3, 13, 15, 16, 17]
+    visitableRooms: [1, 2, 3, 13, 14, 15, 16, 17]
   },
   {
     id: 15,
     name: 'Lilac Room',
     tileName: 'tile-lilac-room',
     lineOfSight: [14],
-    visitableRooms: [1, 2, 3, 13, 14, 16, 17]
+    visitableRooms: [1, 2, 3, 13, 14, 15, 16, 17]
   },
   {
     id: 16,
     name: 'Servants Quarters',
     tileName: 'tile-servants-quarters',
     lineOfSight: [1, 14, 17, 23],
-    visitableRooms: [1, 2, 3, 14, 15, 17, 23]
+    visitableRooms: [1, 2, 3, 14, 15, 16, 17, 23]
   },
   {
     id: 17,
     name: 'Hedge Maze',
     tileName: 'tile-hedge-maze',
     lineOfSight: [6, 18, 19, 23],
-    visitableRooms: [1, 2, 3, 14, 15, 16, 18, 19, 23]
+    visitableRooms: [1, 2, 3, 14, 15, 16, 17, 18, 19, 23]
   },
   {
     id: 18,
     name: 'Carriage House',
     tileName: 'tile-carriage-house',
     lineOfSight: [1, 6, 17, 19],
-    visitableRooms: [1, 17, 19]
+    visitableRooms: [1, 17, 18, 19]
   },
   {
     id: 19,
     name: 'Piazza',
     tileName: 'tile-piazza',
     lineOfSight: [0, 3, 6, 18, 20, 22],
-    visitableRooms: [6, 17, 18, 20]
+    visitableRooms: [6, 17, 18, 19, 20]
   },
   {
     id: 20,
     name: 'Foyer',
     tileName: 'tile-foyer',
     lineOfSight: [0, 3, 19, 22],
-    visitableRooms: [0, 19]
+    visitableRooms: [0, 19, 20]
   },
   {
     id: 21,
     name: 'Wine Cellar',
     tileName: 'tile-wine-cellar',
     lineOfSight: [7, 8],
-    visitableRooms: [7, 8]
+    visitableRooms: [7, 8, 21]
   },
   {
     id: 22,
     name: 'Gallery',
     tileName: 'tile-gallery',
     lineOfSight: [0, 3, 10, 11, 13, 19, 20],
-    visitableRooms: [3, 11, 13]
+    visitableRooms: [3, 11, 13, 22]
   },
   {
     id: 23,
     name: 'White Room',
     tileName: 'tile-white-room',
     lineOfSight: [16, 17],
-    visitableRooms: [16, 17]
+    visitableRooms: [16, 17, 23]
   }
 ];
 
