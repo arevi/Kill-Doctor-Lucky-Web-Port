@@ -918,6 +918,7 @@ const nextTurn = async (e, luckyTrain) => {
     renderMovableRooms(gameData.Players[gameData.currentTurn]);
     moveDoctorLucky();
   }
+  resetButton();
   if (gameData.gameType == 'online') {
     updateGame();
   }
