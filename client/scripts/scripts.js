@@ -761,13 +761,15 @@ const renderPlayerCard = player => {
 const useMoveCard = e => {
   let card = moveCards[e.target.id];
   let selection;
+  modalBody.innerHTML = '';
 
   modalHeader.innerHTML = `<h2>Who would you like to move?`;
   modalBody.innerHTML = `
-    <div class="card-container>
+    <div class="card-container">
       <div class="card" id="Yourself">Yourself</div>
       <div class="card" id="Lucky">Dr. Lucky</div>
-    </div><div class="Btn">Cancel</div>`;
+    </div>
+    <div class="Btn">Cancel</div>`;
 
   modalFooter.innerHTML = `Movement`;
   modal.style.display = 'block';
@@ -1018,7 +1020,9 @@ const displayGameCard = card => {
     </div>
     </div>`;
     if (card.modifierDamage != null) {
-      modalBody.innerHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
+      modalBody.innerHTML += `<p class="card-bonus-damage">Worth ${
+        card.modifierDamage
+      } in the ${rooms[card.modifierRoomID].name}</p></div>`;
     }
     modalFooter.innerHTML = `<h3>Weapon cards allow you to deal additional damage</h3>`;
   } else if (card.failureValue) {
@@ -1224,7 +1228,9 @@ const murderAttempt = () => {
         weaponHTML +
         `<div class="card" id="${card.id}">${card.name}<p>Damage: ${card.baseDamage}</p>`;
       if (card.modifierDamage != null) {
-        weaponHTML += `<p class="card-bonus-damage">Worth ${card.modifierDamage} in the ${rooms[card.modifierRoomID].name}</p></div>`;
+        weaponHTML += `<p class="card-bonus-damage">Worth ${
+          card.modifierDamage
+        } in the ${rooms[card.modifierRoomID].name}</p></div>`;
       } else {
         weaponHTML += '</div>';
       }
