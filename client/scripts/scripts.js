@@ -755,35 +755,9 @@ const renderPlayerCard = player => {
 };
 
 const useMoveCard = e => {
-  let card = moveCards[e.target.id];
-  let selection;
-  modalBody.innerHTML = '';
-
-  modalHeader.innerHTML = `<h2>Who would you like to move?`;
-  modalBody.innerHTML = `
-    <div class="card-container">
-      <div class="card" id="Yourself">Yourself</div>
-      <div class="card" id="Lucky">Dr. Lucky</div>
-    </div>
-    <div class="Btn">Cancel</div>`;
-
-  modalFooter.innerHTML = `Movement`;
-  modal.style.display = 'block';
-
-  document
-    .getElementById('Yourself')
-    .addEventListener('click', moveYourself(card));
-
-  document.getElementById('Lucky').addEventListener('click', moveLucky(card));
-
-  document
-    .querySelector('.Btn')
-    .addEventListener('click', () => (modal.style.display = 'none'));
+  gameData.Players[gameData.currentTurn].moveCards.pop();
+  renderMovableRooms(gameData.Players[gameData.currentTurn]);
 };
-
-const moveYourself = (e, card) => {};
-
-const moveLucky = (e, card) => {};
 // Renders the doctor lucky sprite on the game board
 // Removes any previous doctor lucky sprites if they exist
 const renderDoctorLucky = () => {
@@ -879,7 +853,7 @@ function movePlayer(event, roomID) {
   renderPlayers();
   updatePlayerList();
 
-  resetMovableRooms(playerID);
+  resetMovableRooms();
 
   if (
     checkLineOfSight(gameData.Players[gameData.currentTurn].location) == false
@@ -908,6 +882,7 @@ const nextTurn = () => {
       gameData.DoctorLucky.location + 1 &&
     checkRoomPlayerCount(gameData.Players[gameData.currentTurn].location) == 1
   ) {
+    gameData.currentTurn = gameData.currentTurn;
   } else {
     gameData.currentTurn++;
   }
