@@ -1,9 +1,5 @@
 //TO DO
-//1. Card integration (Weapons, Move, Failure)
-//2. User Interface
-//3. Ability to kill Dr. Lucky
-//4. Convert to MVC for better code organization
-//5. Add online play
+//1. Convert to MVC for better code organization
 
 //Element Selectors
 const boardTiles = document.querySelectorAll('.board-tile');
@@ -906,20 +902,24 @@ const resetMovableRooms = () => {
 // Also checks if all players have had turn
 // If all players have went, Doctor Lucky moves
 // Allows for lucky train to be passed in, allowing for another turn
-const nextTurn = async (e, luckyTrain) => {
-  if (!luckyTrain) {
+const nextTurn = () => {
+  if (
+    gameData.Players[gameData.currentTurn].location ==
+      gameData.DoctorLucky.location + 1 &&
+    checkRoomPlayerCount(gameData.Players[gameData.currentTurn].location) == 1
+  ) {
+  } else {
     gameData.currentTurn++;
   }
 
   if (gameData.currentTurn == gameData.playerCount) {
     gameData.currentRound++;
     gameData.currentTurn = 0;
-    moveDoctorLucky();
-    renderMovableRooms(gameData.Players[gameData.currentTurn]);
-  } else {
-    renderMovableRooms(gameData.Players[gameData.currentTurn]);
-    moveDoctorLucky();
   }
+
+  moveDoctorLucky();
+  renderMovableRooms(gameData.Players[gameData.currentTurn]);
+
   resetButton();
   if (gameData.gameType == 'online') {
     updateGame();
@@ -941,9 +941,7 @@ const getRoomID = name => {
 const checkLineOfSight = roomID => {
   let visible = false;
 
-  let playersInRoom = gameData.Players.filter(
-    player => player.location == roomID
-  ).length;
+  let playersInRoom = checkRoomPlayerCount(roomID);
 
   if (playersInRoom != 1) {
     visible = true;
@@ -957,6 +955,10 @@ const checkLineOfSight = roomID => {
   });
 
   return visible;
+};
+
+const checkRoomPlayerCount = roomID => {
+  return gameData.Players.filter(player => player.location == roomID).length;
 };
 
 // Function to generate a random card from the deck of available cards
