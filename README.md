@@ -2,6 +2,10 @@
 
 A port of the classic "CheapAssGames" board game, Kill Doctor Lucky. This game was created as a project required for the class CS370: Software Engineering.
 
+# NOTE
+
+Automatic dynamic page resizing not included.  Please adjust browser zoom to encapsulate side panels appropriately (usually about 70% - 80%).
+
 # Try it online
 
 https://kill-doctor-lucky.herokuapp.com/
